@@ -24,7 +24,7 @@ namespace WebDemo.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Changed";
 
             return View();
         }
