@@ -19,14 +19,14 @@ namespace DataLibrary.BusinessLogic
                 EmailAddress = email
             };
 
-            string sql = @" insert into dbo.Employee(EmployeeId,FirstName,LastName,EmailAddress)
-                            values (@EmployeeId,@FirstName,@LastName,@EmailAddress);";
+            string sql = @" insert into dbo.Employee
+                            values (1,@EmployeeId,@FirstName,@LastName,@EmailAddress);";
 
             return SqlDataAccess.SaveData(sql, model);
         }
         public static List<EmployeeModel> LoadEmployees()
         {
-            string sql = @"select  Id,EmployeeId,FirstName,LastName,EmailAddress  from dbo.Employee;";
+            string sql = @"select  *  from dbo.Employee;";
             return SqlDataAccess.LoadData<EmployeeModel>(sql);
         }
     }

@@ -12,6 +12,7 @@ namespace DataLibrary.DataAccess
     {
         public static string GetConnectionString(string name = "MVCDemoDb")
         {
+            name = "EmployeeDatabase";
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
 
