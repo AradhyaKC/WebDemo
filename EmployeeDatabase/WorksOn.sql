@@ -6,6 +6,6 @@
     [ShiftStartTime] TIME NOT NULL, 
     [ShiftEndTime] TIME NOT NULL,
     PRIMARY KEY (EmployeeId, ProjectId),
-    FOREIGN KEY (EmployeeId) References Employee(EmployeeId) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (ProjectId) References Project(ProjectId) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (EmployeeId) References Employee(EmployeeId),
+    FOREIGN KEY (ProjectId) References Project(ProjectId)
 )
