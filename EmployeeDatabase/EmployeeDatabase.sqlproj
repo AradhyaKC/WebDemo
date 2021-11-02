@@ -66,6 +66,7 @@
   <ItemGroup>
     <None Include="EmployeeDatabase.publish.xml" />
     <None Include="EmployeeDatabase_1.publish.xml" />
+    <None Include="EmployeeDatabaseSQLEx.publish.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Employee.sql" />
