@@ -12,4 +12,20 @@ namespace DataLibrary.Models
         public string LastName { get; set; }
         public string  EmailAddress { get; set; }
     }
+    public class Employee
+    {
+        public int employeeId { get; set; }
+        public string firstName { get; set; }
+        public string lastNAme { get; set; }
+        public string emailAddress { get; set; }
+        public string phoneNo { get; set; }
+        public DateTime dateOfBirth { get; set; }
+        public long salary { get; set; }
+        public string password { get; set; }
+        public int leavesAvailable { get; set; }
+        public int credits { get; set; }
+        public int CompanyId { get; set; }
+
+    }
+        
 }
