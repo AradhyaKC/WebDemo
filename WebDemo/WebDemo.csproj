@@ -200,6 +200,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\SignUp.cshtml" />
     <Content Include="Views\Home\ViewEmployees.cshtml" />
+    <Content Include="Views\Home\CreateCompany.cshtml" />
+    <Content Include="Views\Home\CreateManager.cshtml" />
+    <Content Include="Views\Home\CreateEmployee.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

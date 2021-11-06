@@ -14,10 +14,11 @@ namespace WebDemo.Models
 
         [Display(Name = "Motto")]
         [Required(ErrorMessage = "Motto of company should be entered")]
-        public string motto;
+        public string motto { get; set; }
 
+        [DataType(DataType.Date)]
         [Display(Name = "Date when company was started")]
         [Required(ErrorMessage = "Start date should be entered")]
-        public DateTime startDate;
+        public DateTime startDate { get; set; }
     }
 }

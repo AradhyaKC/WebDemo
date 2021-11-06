@@ -11,7 +11,7 @@ CREATE TABLE [dbo].[Employee]
     [Password] VARCHAR(50) NOT NULL, 
     [LeavesAvailable] INT NOT NULL, 
     [Credits] INT NOT NULL, 
-    [CompanyId] INT NOT NULL,
+    [CompanyName] VARCHAR(50) NOT NULL,
     PRIMARY KEY (EmployeeId),
-    FOREIGN KEY (CompanyId) References Company(CompanyId)
+    FOREIGN KEY (CompanyName) References Company(CompanyName)
 )

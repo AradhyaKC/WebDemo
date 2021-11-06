@@ -8,6 +8,8 @@ namespace WebDemo.Models
 {
     public class EmployeeModel
     {
+        [Display(Name = "Employee ID")]
+        public int employeeId { get; set; }
 
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "First Name is Required")]
@@ -26,7 +28,7 @@ namespace WebDemo.Models
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Confirm Email Address ")]
         [Required(ErrorMessage = "Email Address is Required")]
-        [Compare("EmailAddress", ErrorMessage = "EmailAddresses must match")]
+        [Compare("emailAddress", ErrorMessage = "EmailAddresses must match")]
         [StringLength(100, ErrorMessage = "Cannot Exceed 100 Characters")]
         public string confirmEmailAddress { get; set; }
 
@@ -52,7 +54,7 @@ namespace WebDemo.Models
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password ")]
         [Required(ErrorMessage = "Confirm Password  is Required")]
-        [Compare("Password", ErrorMessage = "Passwords must match")]
+        [Compare("password", ErrorMessage = "Passwords must match")]
         public string confirmPassword { get; set; }
 
         [Display(Name ="Allot number of leaves")]

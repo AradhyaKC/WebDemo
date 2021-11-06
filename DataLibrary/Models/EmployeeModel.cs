@@ -16,7 +16,7 @@ namespace DataLibrary.Models
     {
         public int employeeId { get; set; }
         public string firstName { get; set; }
-        public string lastNAme { get; set; }
+        public string lastName { get; set; }
         public string emailAddress { get; set; }
         public string phoneNo { get; set; }
         public DateTime dateOfBirth { get; set; }
@@ -24,7 +24,7 @@ namespace DataLibrary.Models
         public string password { get; set; }
         public int leavesAvailable { get; set; }
         public int credits { get; set; }
-        public int CompanyId { get; set; }
+        public string companyName { get; set; }
 
     }
         

@@ -1,7 +1,6 @@
 ﻿CREATE TABLE [dbo].[Company]
-(
-	[CompanyId] INT NOT NULL PRIMARY KEY IDENTITY, 
-    [CompanyName] VARCHAR(50) NOT NULL, 
+( 
+    [CompanyName] VARCHAR(50) NOT NULL PRIMARY KEY, 
     [Motto] VARCHAR(50) NOT NULL, 
-    [Startdate] DATE NOT NULL 
+    [StartDate] DATE NOT NULL 
 )
