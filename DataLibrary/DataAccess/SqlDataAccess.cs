@@ -16,11 +16,12 @@ namespace DataLibrary.DataAccess
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
 
-        public static List<T> Query<T>(string sql,T data)
+        public static List<T> Query<T,U>(string sql,U data)
         {
             IDbConnection connection = new SqlConnection(GetConnectionString());
             return connection.Query<T>(sql,data).AsList<T>();
         }
+
         public static List<T> LoadData<T>(string sql)
         {
             IDbConnection connection = new SqlConnection(GetConnectionString());

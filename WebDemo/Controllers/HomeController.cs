@@ -12,6 +12,15 @@ namespace WebDemo.Controllers
     {
         public ActionResult Index()
         {
+            HttpCookie cookie = Request.Cookies.Get("UserInfo");
+            if(cookie != null && cookie["employeeId"] !="")
+            {
+                ViewBag.Title = "Logged in";
+            }
+            else
+            {
+                ViewBag.Title = "Home Page";
+            }
             return View();
         }
 
@@ -92,6 +101,61 @@ namespace WebDemo.Controllers
             }
             return View();
         }
+
+        
+        public ActionResult LogIn()
+        {
+            ViewBag.Title = "";
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogIn(LoginModel loginModel)
+        {
+            if (ModelState.IsValid)
+            {
+                int employeeId = DataLibrary.BusinessLogic.EmployeeProcessor.CheckLogin(loginModel.emailAddress, loginModel.password);
+                if(employeeId == -1)
+                {
+                    ViewBag.Title = "An account with this email address is not registered";
+                }
+                else if(employeeId == -2)
+                {
+                    ViewBag.Title = "Incorrect password";
+                }
+                else if(employeeId >= 0)
+                {
+                    HttpCookie cookie = Request.Cookies.Get("UserInfo");
+                    if (cookie == null)
+                    {
+                        cookie = new HttpCookie("UserInfo");
+                        cookie["employeeId"] = employeeId.ToString();
+                        Response.Cookies.Add(cookie);
+                    }
+                    else
+                    {
+                        cookie["employeeId"] = employeeId.ToString();
+                    }
+                    return RedirectToAction("Index");
+                }
+            }
+            return View();
+        }
+
+        public ActionResult LogOut()
+        {
+            HttpCookie cookie = Request.Cookies.Get("UserInfo");
+            if((cookie == null))
+            {
+                throw new Exception();
+            }
+            cookie["employeeId"] = "";
+            cookie["companyName"] = "";
+            Response.Cookies.Add(cookie);
+            return RedirectToAction("Index");
+        }
+
         //public ActionResult CreateEmployee()
         //{
             

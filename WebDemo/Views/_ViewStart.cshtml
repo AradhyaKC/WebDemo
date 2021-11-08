@@ -1,3 +1,19 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    HttpCookie cookie = Request.Cookies.Get("UserInfo");
+    if (cookie != null && cookie["employeeId"] != "" )
+    {
+        int d = Convert.ToInt32(cookie["employeeId"]);
+        if (DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(Convert.ToInt32(cookie["employeeId"])))
+        {
+            Layout = "~/Views/Shared/Manager_Layout.cshtml";
+        }
+        else
+        {
+            Layout = "~/Views/Shared/Employee_Layout.cshtml";
+        }
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }

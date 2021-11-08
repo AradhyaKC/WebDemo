@@ -61,20 +61,9 @@ namespace DataLibrary.BusinessLogic
         {
             int forBr = DataLibrary.BusinessLogic.EmployeeProcessor.CreateEmployee(firstName, lastName, emailAddress,
                     phoneNo, dateOfBirth,salary, password, leavesAvailable, credits, companyName);
-            DataLibrary.Models.Employee employee1 = new DataLibrary.Models.Employee()
-            {
-                firstName = firstName,
-                lastName = lastName,
-                emailAddress = emailAddress,
-                phoneNo = phoneNo,
-                dateOfBirth = dateOfBirth,
-                salary = salary,
-                leavesAvailable = leavesAvailable,
-                credits = credits,
-                companyName = companyName
-            };
             string sql = " select * from dbo.Employee where dbo.Employee.EmailAddress = @emailAddress;";
-            List<DataLibrary.Models.Employee> employeeList = DataLibrary.DataAccess.SqlDataAccess.Query(sql, employee1);
+            List<DataLibrary.Models.Employee> employeeList = DataLibrary.DataAccess.SqlDataAccess.Query<DataLibrary.Models.Employee,object>
+                (sql, new { emailAddress = emailAddress});
             Employee employee2 = employeeList[0];
             string sql1 = "insert into dbo.CompanyManager values(@employeeId,@companyName);";
             return SqlDataAccess.SaveData(sql1, employee2);
@@ -83,6 +72,32 @@ namespace DataLibrary.BusinessLogic
         {
             string sql = @"select  *  from dbo.Employee;";
             return SqlDataAccess.LoadData<EmployeeModel>(sql);
+        }
+        public static int CheckLogin(string emailAddress, string password)
+        {
+            string sql = "select * from dbo.Employee where dbo.Employee.EmailAddress = @emailAddress";
+            List<Employee> employeeList = DataLibrary.DataAccess.SqlDataAccess.Query<Employee, object>(sql,
+                new { emailAddress = emailAddress });
+            if (employeeList.Count == 0)
+            {
+                return -1;
+            }
+            else if (employeeList[0].password != password)
+            {
+                return -2;
+            }
+            else
+            {
+                return employeeList[0].employeeId;
+            }
+        }
+        public static bool IsManager( int employeeId)
+        {
+            string sql = "select * from dbo.CompanyManager where EmployeeId= @employeeId";
+            List<object> List = SqlDataAccess.Query<object, object>(sql, new { employeeId = employeeId });
+            if (List.Count > 0)
+                return true;
+            else return false;
         }
     }
 }
