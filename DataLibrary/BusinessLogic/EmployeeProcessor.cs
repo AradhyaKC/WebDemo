@@ -68,10 +68,10 @@ namespace DataLibrary.BusinessLogic
             string sql1 = "insert into dbo.CompanyManager values(@employeeId,@companyName);";
             return SqlDataAccess.SaveData(sql1, employee2);
         }
-        public static List<Employee> LoadEmployees()
+        public static List<EmployeeModel> LoadEmployees()
         {
             string sql = @"select  *  from dbo.Employee;";
-            return SqlDataAccess.LoadData<Employee>(sql);
+            return SqlDataAccess.LoadData<EmployeeModel>(sql);
         }
         public static int CheckLogin(string emailAddress, string password)
         {
