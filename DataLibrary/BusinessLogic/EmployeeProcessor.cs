@@ -8,7 +8,6 @@ namespace DataLibrary.BusinessLogic
 {
     public static class EmployeeProcessor
     {
-        
         public static int CreateEmployee(int employeeId, string firstName, string lastName, string email)
         { 
             EmployeeModel model = new EmployeeModel()
@@ -68,6 +67,24 @@ namespace DataLibrary.BusinessLogic
             string sql1 = "insert into dbo.CompanyManager values(@employeeId,@companyName);";
             return SqlDataAccess.SaveData(sql1, employee2);
         }
+        public static int CreateProject(string projectName,int projectLeaderId,string description,string companyName)
+        {
+            ProjectModel project = new ProjectModel()
+            {
+                projectName = projectName,
+                projectLeaderId = projectLeaderId,
+                description = description,
+                companyName = companyName
+            };
+            string sql = @"insert into dbo.Project values(@projectName, @projectLeaderId, @description, @companyName);";
+            return SqlDataAccess.SaveData(sql, project);
+        }
+        public static List<ProjectModel> ViewProjects()
+        {
+            string sql = "select * from dbo.Project;";
+            return SqlDataAccess.LoadData<ProjectModel>(sql);
+        }
+        public static List<EmployeeModel> LoadEmployees()
         public static List<Employee> LoadEmployees()
         {
             string sql = @"select  *  from dbo.Employee;";
@@ -98,6 +115,36 @@ namespace DataLibrary.BusinessLogic
             if (List.Count > 0)
                 return true;
             else return false;
+        }
+        public static string GetCompanyName(int id,bool isEmployee)
+        {
+            if (isEmployee)
+            {
+                string sql = "select CompanyName from dbo.Employee where EmployeeId = @id";
+                List<string> list = SqlDataAccess.Query<string,object>(sql,new { id = id});
+                return list[0];
+            }
+            else
+            {
+                string sql = "select CompanyName from dbo.Project where ProjectId = @id";
+                List<string> list = SqlDataAccess.Query<string, object>(sql, new { id = id });
+                return list[0];
+            }
+        }
+        public static string GetName(int id, bool isEmployee)
+        {
+            if (isEmployee)
+            {
+                string sql = "select FirstName from dbo.Employee where EmployeeId = @id;";
+                List<string> list = SqlDataAccess.Query<string, object>(sql, new { id = id });
+                return list[0];
+            }
+            else
+            {
+                string sql = "select ProjectName from dbo.Project where ProjectId = @id";
+                List<string> list = SqlDataAccess.Query<string, object>(sql, new { id = id });
+                return list[0];
+            }
         }
     }
 }
