@@ -61,6 +61,32 @@ namespace WebDemo.Controllers
         //    return View(models);
         //}
 
+        public ActionResult Employees()
+        {
+            var data = DataLibrary.BusinessLogic.EmployeeProcessor.LoadEmployees();
+            List<WebDemo.Models.EmployeeModel> employeeModels = new List<EmployeeModel>();
+            foreach(var employee in data)
+            {
+                employeeModels.Add(new EmployeeModel
+                {
+                    employeeId = employee.employeeId,
+                    firstName = employee.firstName,
+                    lastName = employee.lastName,
+                    emailAddress= employee.emailAddress,
+                    confirmEmailAddress = employee.emailAddress,
+                    phoneNo= employee.phoneNo,
+                    dateOfBirth= employee.dateOfBirth,
+                    salary= employee.salary,
+                    password= employee.password,
+                    confirmPassword=employee.password,
+                    leavesAvailable= employee.leavesAvailable,
+                    credits= employee.credits
+                });
+            }
+            return View(employeeModels);
+        }
+
+
         public ActionResult CreateCompany()
         {
             return View();
@@ -156,16 +182,25 @@ namespace WebDemo.Controllers
             return RedirectToAction("Index");
         }
 
-        //public ActionResult CreateEmployee()
-        //{
-            
-        //}
-        //[HttpPost]
-        //public ActionResult CreateEmployee()
-        //{
+        public ActionResult CreateEmployee()
+        {
+            return View();
+        }
 
-        //}
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateEmployee(EmployeeModel employee)
+        {
+            if (ModelState.IsValid)
+            {
+                int noOfRecordsInserted = DataLibrary.BusinessLogic.EmployeeProcessor.CreateEmployee(
+                    employee.firstName, employee.lastName, employee.emailAddress,
+                        employee.phoneNo, employee.dateOfBirth, employee.salary, employee.password,
+                        employee.leavesAvailable, employee.credits, "companyName");
+                return RedirectToAction("Employees","Home");
+            }
+            return View();
+        }
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public ActionResult SignUp(EmployeeModel model)
