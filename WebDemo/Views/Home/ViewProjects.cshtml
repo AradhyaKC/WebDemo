@@ -1,0 +1,65 @@
+﻿@model IEnumerable<WebDemo.Models.ProjectModel>
+
+@{
+    ViewBag.Title = "ViewProjects";
+}
+
+<h2>ViewProjects</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.projectId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.projectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.projectLeaderId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.projectLeaderName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.companyName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.projectId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.projectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.projectLeaderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.projectLeaderName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.companyName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<h3>
+    @Html.ActionLink("Add New Project", "CreateProject")
+</h3>

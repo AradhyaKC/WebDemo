@@ -160,6 +160,7 @@
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -207,6 +208,8 @@
     <Content Include="Views\Home\LogIn.cshtml" />
     <Content Include="Views\Shared\Employee_Layout.cshtml" />
     <Content Include="Views\Shared\Manager_Layout.cshtml" />
+    <Content Include="Views\Home\CreateProject.cshtml" />
+    <Content Include="Views\Home\ViewProjects.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

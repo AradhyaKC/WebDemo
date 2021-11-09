@@ -155,10 +155,46 @@ namespace WebDemo.Controllers
             Response.Cookies.Add(cookie);
             return RedirectToAction("Index");
         }
+        public ActionResult ViewProjects()
+        {
+            var data = DataLibrary.BusinessLogic.EmployeeProcessor.ViewProjects();
+            List<ProjectModel> list = new List<ProjectModel>();
+            foreach(var project in data)
+            {
+                list.Add(new ProjectModel()
+                {
+                    projectName = project.projectName,
+                    projectId = project.projectId,
+                    projectLeaderId = project.projectLeaderId,
+                    projectLeaderName = DataLibrary.BusinessLogic.EmployeeProcessor.GetName(project.projectLeaderId, true),
+                    companyName = project.companyName,
+                    description = project.description
+                });
+            }
+            return View(list);
+        }
+        public ActionResult CreateProject()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateProject(ProjectModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                HttpCookie cookie = Request.Cookies.Get("UserInfo");
+                if (cookie == null || cookie["employeeId"] == "") throw new Exception();
+                DataLibrary.BusinessLogic.EmployeeProcessor.CreateProject(model.projectName, model.projectLeaderId, model.description,
+                    DataLibrary.BusinessLogic.EmployeeProcessor.GetCompanyName(Convert.ToInt32(cookie["employeeId"]), true));
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
 
         //public ActionResult CreateEmployee()
         //{
-            
+
         //}
         //[HttpPost]
         //public ActionResult CreateEmployee()
