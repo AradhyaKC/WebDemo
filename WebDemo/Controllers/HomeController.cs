@@ -130,13 +130,10 @@ namespace WebDemo.Controllers
                     if (cookie == null)
                     {
                         cookie = new HttpCookie("UserInfo");
-                        cookie["employeeId"] = employeeId.ToString();
-                        Response.Cookies.Add(cookie);
                     }
-                    else
-                    {
-                        cookie["employeeId"] = employeeId.ToString();
-                    }
+                    cookie["employeeId"] = employeeId.ToString();
+                    Response.Cookies.Add(cookie);
+
                     return RedirectToAction("Index");
                 }
             }
