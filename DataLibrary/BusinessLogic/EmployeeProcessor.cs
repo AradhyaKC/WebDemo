@@ -84,7 +84,7 @@ namespace DataLibrary.BusinessLogic
             string sql = "select * from dbo.Project;";
             return SqlDataAccess.LoadData<ProjectModel>(sql);
         }
-        public static List<EmployeeModel> LoadEmployees()
+        
         public static List<Employee> LoadEmployees()
         {
             string sql = @"select  *  from dbo.Employee;";

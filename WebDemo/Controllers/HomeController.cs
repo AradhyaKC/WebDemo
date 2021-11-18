@@ -67,7 +67,7 @@ namespace WebDemo.Controllers
             List<WebDemo.Models.EmployeeModel> employeeModels = new List<EmployeeModel>();
             foreach(var employee in data)
             {
-                employeeModels.Add(new EmployeeModel
+                employeeModels.Add(new WebDemo.Models.EmployeeModel
                 {
                     employeeId = employee.employeeId,
                     firstName = employee.firstName,
