@@ -210,6 +210,7 @@
     <Content Include="Views\Shared\Manager_Layout.cshtml" />
     <Content Include="Views\Home\CreateProject.cshtml" />
     <Content Include="Views\Home\ViewProjects.cshtml" />
+    <Content Include="Views\Home\Employees.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

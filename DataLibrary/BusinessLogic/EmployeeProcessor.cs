@@ -85,9 +85,10 @@ namespace DataLibrary.BusinessLogic
             return SqlDataAccess.LoadData<ProjectModel>(sql);
         }
         public static List<EmployeeModel> LoadEmployees()
+        public static List<Employee> LoadEmployees()
         {
             string sql = @"select  *  from dbo.Employee;";
-            return SqlDataAccess.LoadData<EmployeeModel>(sql);
+            return SqlDataAccess.LoadData<Employee>(sql);
         }
         public static int CheckLogin(string emailAddress, string password)
         {
