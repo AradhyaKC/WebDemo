@@ -107,7 +107,7 @@ namespace DataLibrary.BusinessLogic
         }
         public static List<Project> ViewProjects(int employeeId)
         {
-            var employee = GetEmployeeModel(employeeId);
+            var employee = GetEmployee(employeeId);
             string sql;
             if (IsManager(employeeId))
             {
@@ -121,7 +121,7 @@ namespace DataLibrary.BusinessLogic
                 List<Project> projects = new List<Project>();
                 foreach(var id in projectIds)
                 {
-                    projects.Add(GetProjectModel(id));
+                    projects.Add(GetProject(id));
                 }
                 return projects;
             }
