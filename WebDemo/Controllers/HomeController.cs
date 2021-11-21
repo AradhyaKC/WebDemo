@@ -189,7 +189,7 @@ namespace WebDemo.Controllers
                     projectName = project.projectName,
                     projectId = project.projectId,
                     projectLeaderId = project.projectLeaderId,
-                    projectLeaderName = DataLibrary.BusinessLogic.EmployeeProcessor.GetName(project.projectLeaderId, true),
+                    projectLeaderName = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployeeModel(project.projectLeaderId).firstName,
                     companyName = project.companyName,
                     description = project.description
                 });
@@ -208,11 +208,58 @@ namespace WebDemo.Controllers
             {
                 HttpCookie cookie = Request.Cookies.Get("UserInfo");
                 if (cookie == null || cookie["employeeId"] == "") throw new Exception();
+                if (DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployeeModel(model.projectLeaderId) == null)
+                    throw new Exception("Employee of this id does not exist");
+                string companyName = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployeeModel(Convert.ToInt32(cookie["employeeId"])).companyName;
                 DataLibrary.BusinessLogic.EmployeeProcessor.CreateProject(model.projectName, model.projectLeaderId, model.description,
-                    DataLibrary.BusinessLogic.EmployeeProcessor.GetCompanyName(Convert.ToInt32(cookie["employeeId"]), true));
+                    companyName);
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        public ActionResult ViewProjectTeam(int projectId)
+        {
+            var data = DataLibrary.BusinessLogic.EmployeeProcessor.ViewProjectTeam(projectId);
+            List<WorksOnModel> list = new List<WorksOnModel>();
+            foreach (var employee in data)
+            {
+                list.Add(new WorksOnModel()
+                {
+                    employeeId = employee.employeeId,
+                    projectId = employee.projectId,
+                    firstName = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployeeModel(employee.employeeId).firstName,
+                    role = employee.role,
+                    shiftStartTime = employee.shiftStartTime,
+                    shiftEndTime = employee.shiftEndTime
+                });
+            }
+            return View(list);
+        }
+        public ActionResult AddProjectEmployee()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddProjectEmployee(WorksOnModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if(DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployeeModel(model.employeeId) == null)
+                {
+                    ViewBag.Title = "The employeeId passed does not exist";
+                    return View();
+                }
+                else if(DataLibrary.BusinessLogic.EmployeeProcessor.GetProjectModel(model.projectId) == null)
+                {
+                    ViewBag.Title = "The projectId passed does not exist";
+                    return View();
+                }
+                int noOfRecordsInserted = DataLibrary.BusinessLogic.EmployeeProcessor.AddProjectEmployee(model.projectId, model.employeeId, model.role,
+                    model.shiftStartTime, model.shiftEndTime);
+            }
+            return RedirectToAction("ViewProjects");
         }
 
         public ActionResult CreateEmployee()

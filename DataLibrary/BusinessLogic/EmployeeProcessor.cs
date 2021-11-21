@@ -69,7 +69,7 @@ namespace DataLibrary.BusinessLogic
         }
         public static int CreateProject(string projectName,int projectLeaderId,string description,string companyName)
         {
-            ProjectModel project = new ProjectModel()
+            Project project = new Project()
             {
                 projectName = projectName,
                 projectLeaderId = projectLeaderId,
@@ -79,12 +79,30 @@ namespace DataLibrary.BusinessLogic
             string sql = @"insert into dbo.Project values(@projectName, @projectLeaderId, @description, @companyName);";
             return SqlDataAccess.SaveData(sql, project);
         }
-        public static List<ProjectModel> ViewProjects()
+        public static List<Project> ViewProjects()
         {
             string sql = "select * from dbo.Project;";
-            return SqlDataAccess.LoadData<ProjectModel>(sql);
+            return SqlDataAccess.LoadData<Project>(sql);
         }
-        
+        public static List<WorksOn> ViewProjectTeam(int projectId)
+        {
+            string sql = "select * from dbo.WorksOn where projectId = @projectId;";
+            return SqlDataAccess.Query<WorksOn,object>(sql ,new { projectId = projectId });
+        }
+
+        public static int AddProjectEmployee(int projectId,int employeeId, string role,DateTime shiftStartTime,DateTime shiftEndTime)
+        {
+            WorksOn worksOn = new WorksOn()
+            {
+                projectId = projectId,
+                employeeId = employeeId,
+                role = role,
+                shiftEndTime = shiftEndTime,
+                shiftStartTime = shiftStartTime
+            };
+            string sql = @"insert into dbo.WorksOn values(@employeeId,@projectId,@role,@shiftStartTime,@shiftEndTime);";
+            return SqlDataAccess.SaveData(sql, worksOn);
+        }
         public static List<Employee> LoadEmployees()
         {
             string sql = @"select  *  from dbo.Employee;";
@@ -116,35 +134,23 @@ namespace DataLibrary.BusinessLogic
                 return true;
             else return false;
         }
-        public static string GetCompanyName(int id,bool isEmployee)
+        public static Employee GetEmployeeModel(int id)
         {
-            if (isEmployee)
-            {
-                string sql = "select CompanyName from dbo.Employee where EmployeeId = @id";
-                List<string> list = SqlDataAccess.Query<string,object>(sql,new { id = id});
-                return list[0];
-            }
+            string sql = "select * from dbo.Employee where EmployeeId = @id;";
+            List<Employee> list = SqlDataAccess.Query<Employee, object>(sql, new { id = id });
+            if (list.Count == 0)
+                return null;
             else
-            {
-                string sql = "select CompanyName from dbo.Project where ProjectId = @id";
-                List<string> list = SqlDataAccess.Query<string, object>(sql, new { id = id });
                 return list[0];
-            }
         }
-        public static string GetName(int id, bool isEmployee)
+        public static Project GetProjectModel(int id)
         {
-            if (isEmployee)
-            {
-                string sql = "select FirstName from dbo.Employee where EmployeeId = @id;";
-                List<string> list = SqlDataAccess.Query<string, object>(sql, new { id = id });
-                return list[0];
-            }
+            string sql = "select * from dbo.Project where ProjectId = @id;";
+            List<Project> list = SqlDataAccess.Query<Project ,object>(sql, new { id = id });
+            if (list.Count == 0)
+                return null;
             else
-            {
-                string sql = "select ProjectName from dbo.Project where ProjectId = @id";
-                List<string> list = SqlDataAccess.Query<string, object>(sql, new { id = id });
                 return list[0];
-            }
         }
     }
 }
