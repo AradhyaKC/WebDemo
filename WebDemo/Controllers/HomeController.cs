@@ -283,6 +283,54 @@ namespace WebDemo.Controllers
             }
             return View();
         }
+
+        public ActionResult EditEmployee(int employeeId)
+        {
+            var employee = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(employeeId);
+            var Webemployee = new WebDemo.Models.EmployeeModel
+            {
+                employeeId = employee.employeeId,
+                firstName = employee.firstName,
+                lastName = employee.lastName,
+                emailAddress = employee.emailAddress,
+                phoneNo = employee.phoneNo,
+                dateOfBirth = employee.dateOfBirth,
+                salary = employee.salary,
+                password = employee.password,
+                leavesAvailable = employee.leavesAvailable,
+                credits = employee.credits
+            };
+            return View(Webemployee);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditEmployee(EmployeeModel employeeModel)
+        {
+             DataLibrary.Models.Employee employee = new DataLibrary.Models.Employee
+             {
+                 employeeId = employeeModel.employeeId,
+                 firstName = employeeModel.firstName,
+                 lastName = employeeModel.lastName,
+                 emailAddress = employeeModel.emailAddress,
+                 phoneNo = employeeModel.phoneNo,
+                 dateOfBirth = employeeModel.dateOfBirth,
+                 salary = employeeModel.salary,
+                 password = employeeModel.password,
+                 leavesAvailable = employeeModel.leavesAvailable,
+                 credits = employeeModel.credits,
+                 companyName = "SomeCompany10"
+             };
+             if (DataLibrary.BusinessLogic.EmployeeProcessor.EditEmployee(employee))
+             {
+                return RedirectToAction("Employees", "Home");
+             }
+             else
+             {
+                throw new Exception(" cannot Edit this employee");
+             }
+            return RedirectToAction("Index");
+        }
         public ActionResult FireEmployee(int employeeId)
         {
             DataLibrary.BusinessLogic.EmployeeProcessor.FireEmployee(employeeId);
