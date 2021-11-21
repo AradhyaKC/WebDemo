@@ -43,6 +43,20 @@ namespace DataLibrary.BusinessLogic
                         @credits,@companyName);";
             return SqlDataAccess.SaveData(sql, employee);
         }
+        public static bool PromoteEmployeeToManager(int employeeId)
+        {
+            if (IsManager(employeeId))
+            {
+                throw new Exception("Already a Manager . id =" + employeeId);
+                return false;
+            }
+
+            string sql = "insert into dbo.CompanyManager values(@employeeId, @companyName)";
+            var employee = GetEmployee(employeeId);
+            var sqlObject = new { employeeId = employeeId, companyName =employee.companyName};
+            SqlDataAccess.Query<object, object>(sql, sqlObject);
+            return true;
+        }
         public static bool EditEmployee(Employee employee)
         {
 
