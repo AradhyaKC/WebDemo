@@ -98,13 +98,24 @@
             @Html.DisplayFor(modelItem => item.credits)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+
+
             @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @if (DataLibrary.BusinessLogic.EmployeeProcessor.CanFireEmployee(item.employeeId)) 
-             {
-                @Html.ActionLink("Fire Employee", "FireEmployee","Home", new { employeeID=item.employeeId },null);
-             } 
-            </td>
+
+            @{
+                HttpCookie cookie1 = Request.Cookies.Get("UserInfo");
+                if (cookie != null &&
+                    DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(Convert.ToInt32(cookie1["employeeId"])))
+                {
+                    @Html.ActionLink("Edit", "EditEmployee", new { employeeID = item.employeeId }) ; 
+
+                    if(DataLibrary.BusinessLogic.EmployeeProcessor.CanFireEmployee(item.employeeId))
+                    {
+                        @Html.ActionLink("Fire Employee", "FireEmployee", "Home", new { employeeID = item.employeeId }, null);
+                    }
+                }
+            }
+        </td>
     
         </tr>
 }

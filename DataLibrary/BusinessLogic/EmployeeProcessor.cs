@@ -43,6 +43,32 @@ namespace DataLibrary.BusinessLogic
                         @credits,@companyName);";
             return SqlDataAccess.SaveData(sql, employee);
         }
+        public static bool EditEmployee(Employee employee)
+        {
+
+            var tempEmployee = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(employee.employeeId);
+            tempEmployee.salary = employee.salary;
+            tempEmployee.credits = employee.credits;
+            tempEmployee.leavesAvailable = employee.leavesAvailable;
+            string sql = @"update dbo.Employee set Salary = @salary ,LeavesAvailable= @leavesAvailable,
+                           Credits= @credits where EmployeeId = @employeeId";
+            SqlDataAccess.Query<object, Employee>(sql, tempEmployee);
+            //new
+            //{
+            //    salary = employee.salary,
+            //    leavesAvailable = employee.leavesAvailable
+            //,
+            //    credits = employee.credits
+            //}
+            return true;
+        }
+        public static Employee GetEmployee(int employeeId)
+        {
+            if (!EmployeeExists(employeeId)) throw new Exception("Employee of this id does not exist , id =" + employeeId);
+            string sql = "select * from dbo.Employee where EmployeeId = @employeeId";
+            var listOfEmployee = SqlDataAccess.Query<Employee, object>(sql, new { employeeId = employeeId });
+            return listOfEmployee[0];
+        }
         public static int CreateCompany(string companyName, string motto, DateTime startDate)
         {
             Company company = new Company()
