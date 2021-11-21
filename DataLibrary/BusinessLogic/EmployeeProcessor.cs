@@ -208,16 +208,17 @@ namespace DataLibrary.BusinessLogic
                 return true;
             else return false;
         }
-        public static Employee GetEmployeeModel(int id)
-        {
-            string sql = "select * from dbo.Employee where EmployeeId = @id;";
-            List<Employee> list = SqlDataAccess.Query<Employee, object>(sql, new { id = id });
-            if (list.Count == 0)
-                return null;
-            else
-                return list[0];
-        }
-        public static Project GetProjectModel(int id)
+
+        //public static Employee GetEmployeeModel(int id)
+        //{
+        //    string sql = "select * from dbo.Employee where EmployeeId = @id;";
+        //    List<Employee> list = SqlDataAccess.Query<Employee, object>(sql, new { id = id });
+        //    if (list.Count == 0)
+        //        return null;
+        //    else
+        //        return list[0];
+        //}
+        public static Project GetProject(int id)
         {
             string sql = "select * from dbo.Project where ProjectId = @id;";
             List<Project> list = SqlDataAccess.Query<Project ,object>(sql, new { id = id });

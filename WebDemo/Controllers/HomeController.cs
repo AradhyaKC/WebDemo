@@ -189,7 +189,7 @@ namespace WebDemo.Controllers
                     projectName = project.projectName,
                     projectId = project.projectId,
                     projectLeaderId = project.projectLeaderId,
-                    projectLeaderName = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployeeModel(project.projectLeaderId).firstName,
+                    projectLeaderName = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(project.projectLeaderId).firstName,
                     companyName = project.companyName,
                     description = project.description
                 });
@@ -208,9 +208,9 @@ namespace WebDemo.Controllers
             {
                 HttpCookie cookie = Request.Cookies.Get("UserInfo");
                 if (cookie == null || cookie["employeeId"] == "") throw new Exception();
-                if (DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployeeModel(model.projectLeaderId) == null)
+                if (DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(model.projectLeaderId) == null)
                     throw new Exception("Employee of this id does not exist");
-                string companyName = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployeeModel(Convert.ToInt32(cookie["employeeId"])).companyName;
+                string companyName = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(Convert.ToInt32(cookie["employeeId"])).companyName;
                 DataLibrary.BusinessLogic.EmployeeProcessor.CreateProject(model.projectName, model.projectLeaderId, model.description,
                     companyName);
                 return RedirectToAction("Index");
@@ -228,7 +228,7 @@ namespace WebDemo.Controllers
                 {
                     employeeId = employee.employeeId,
                     projectId = employee.projectId,
-                    firstName = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployeeModel(employee.employeeId).firstName,
+                    firstName = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(employee.employeeId).firstName,
                     role = employee.role,
                     shiftStartTime = employee.shiftStartTime,
                     shiftEndTime = employee.shiftEndTime
@@ -246,12 +246,12 @@ namespace WebDemo.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployeeModel(model.employeeId) == null)
+                if(DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(model.employeeId) == null)
                 {
                     ViewBag.Title = "The employeeId passed does not exist";
                     return View();
                 }
-                else if(DataLibrary.BusinessLogic.EmployeeProcessor.GetProjectModel(model.projectId) == null)
+                else if(DataLibrary.BusinessLogic.EmployeeProcessor.GetProject(model.projectId) == null)
                 {
                     ViewBag.Title = "The projectId passed does not exist";
                     return View();
@@ -273,10 +273,14 @@ namespace WebDemo.Controllers
         {
             if (ModelState.IsValid)
             {
+                HttpCookie cookie = Request.Cookies.Get("UserInfo");
+                if (cookie == null) throw new Exception("cookie not found ");
+                var manager = DataLibrary.BusinessLogic.EmployeeProcessor.
+                    GetEmployee(Convert.ToInt32(cookie["employeeId"]));
                 int noOfRecordsInserted = DataLibrary.BusinessLogic.EmployeeProcessor.CreateEmployee(
                     employee.firstName, employee.lastName, employee.emailAddress,
                         employee.phoneNo, employee.dateOfBirth, employee.salary, employee.password,
-                        employee.leavesAvailable, employee.credits, "SomeCompany10");
+                        employee.leavesAvailable, employee.credits, manager.companyName);
                 return RedirectToAction("Employees","Home");
             }
             return View();
@@ -305,28 +309,29 @@ namespace WebDemo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditEmployee(EmployeeModel employeeModel)
         {
-             DataLibrary.Models.Employee employee = new DataLibrary.Models.Employee
-             {
-                 employeeId = employeeModel.employeeId,
-                 firstName = employeeModel.firstName,
-                 lastName = employeeModel.lastName,
-                 emailAddress = employeeModel.emailAddress,
-                 phoneNo = employeeModel.phoneNo,
-                 dateOfBirth = employeeModel.dateOfBirth,
-                 salary = employeeModel.salary,
-                 password = employeeModel.password,
-                 leavesAvailable = employeeModel.leavesAvailable,
-                 credits = employeeModel.credits,
-                 companyName = "SomeCompany10"
-             };
+            HttpCookie cookie = Request.Cookies.Get("UserInfo");
+            if (cookie == null) throw new Exception("cookie not found ");
+
+            DataLibrary.Models.Employee employee = new DataLibrary.Models.Employee
+            {
+                employeeId = employeeModel.employeeId,
+                firstName = employeeModel.firstName,
+                lastName = employeeModel.lastName,
+                emailAddress = employeeModel.emailAddress,
+                phoneNo = employeeModel.phoneNo,
+                dateOfBirth = employeeModel.dateOfBirth,
+                salary = employeeModel.salary,
+                password = employeeModel.password,
+                leavesAvailable = employeeModel.leavesAvailable,
+                credits = employeeModel.credits,
+                companyName = ""
+            };
+           
              if (DataLibrary.BusinessLogic.EmployeeProcessor.EditEmployee(employee))
-             {
                 return RedirectToAction("Employees", "Home");
-             }
              else
-             {
                 throw new Exception(" cannot Edit this employee");
-             }
+
             return RedirectToAction("Index");
         }
         public ActionResult FireEmployee(int employeeId)
