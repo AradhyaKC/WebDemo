@@ -161,6 +161,7 @@
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
+    <Compile Include="Models\WorksOnModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -201,7 +202,6 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\SignUp.cshtml" />
-    <Content Include="Views\Home\ViewEmployees.cshtml" />
     <Content Include="Views\Home\CreateCompany.cshtml" />
     <Content Include="Views\Home\CreateManager.cshtml" />
     <Content Include="Views\Home\CreateEmployee.cshtml" />
@@ -212,6 +212,8 @@
     <Content Include="Views\Home\ViewProjects.cshtml" />
     <Content Include="Views\Home\Employees.cshtml" />
     <Content Include="Views\Home\EditEmployee.cshtml" />
+    <Content Include="Views\Home\ViewProjectTeam.cshtml" />
+    <Content Include="Views\Home\AddProjectEmployee.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

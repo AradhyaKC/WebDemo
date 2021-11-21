@@ -51,15 +51,16 @@
                 @Html.DisplayFor(modelItem => item.companyName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("View Project Team", "ViewProjectTeam", "Home", new { projectId = item.projectId }, null)
             </td>
         </tr>
     }
 
 </table>
 
-<h3>
+<h4>
     @Html.ActionLink("Add New Project", "CreateProject")
-</h3>
+</h4>
+<h4>
+    @Html.ActionLink("Add Employee To Project", "AddProjectEmployee")
+</h4>
