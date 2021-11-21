@@ -100,9 +100,13 @@
         <td>
             @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
             @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
+            @if (DataLibrary.BusinessLogic.EmployeeProcessor.CanFireEmployee(item.employeeId)) 
+             {
+                @Html.ActionLink("Fire Employee", "FireEmployee","Home", new { employeeID=item.employeeId },null);
+             } 
+            </td>
+    
+        </tr>
 }
 
 </table>

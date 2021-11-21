@@ -84,12 +84,49 @@ namespace DataLibrary.BusinessLogic
             string sql = "select * from dbo.Project;";
             return SqlDataAccess.LoadData<ProjectModel>(sql);
         }
-        public static List<EmployeeModel> LoadEmployees()
         public static List<Employee> LoadEmployees()
         {
             string sql = @"select  *  from dbo.Employee;";
             return SqlDataAccess.LoadData<Employee>(sql);
         }
+        public static bool CanFireEmployee(int employeeId)
+        {
+            if (!EmployeeExists(employeeId)) throw new Exception("no employee of this id exists. id= " + employeeId);
+            if (IsProjectLeader(employeeId)) return false;
+            if (IsManager(employeeId))
+            {
+                //if only manager 
+                string sql1 = "select CompanyName from dbo.CompanyManager where EmployeeId =@managerId";
+                List<string> companyName = SqlDataAccess.Query<string, object>(sql1, new { managerId = employeeId });
+                sql1 = "select EmployeeId from dbo.CompanyManager where CompanyName=@companyName";
+                List<int> managers = SqlDataAccess.Query<int, object>(sql1, new { companyName = companyName });
+                if (managers.Count < 2)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public static void FireEmployee(int employeeId)
+        {
+            if (!CanFireEmployee(employeeId)) throw new Exception("Cannot fire this Employee id =" + employeeId);
+            string sql = "delete from dbo.Attendence where EmployeeId= @employeeId";
+            var sqlObject = new { employeeId = employeeId };
+            SqlDataAccess.Query<object, object>(sql, sqlObject);
+
+            sql = "delete from dbo.Leave where EmployeeId= @employeeId";
+            SqlDataAccess.Query<object, object>(sql, sqlObject);
+
+            sql = "delete from dbo.CompanyManager where EmployeeId =@employeeId";
+            SqlDataAccess.Query<object, object>(sql, sqlObject);
+
+            sql = "delete from dbo.WorksOn where EmployeeId =@employeeId";
+            SqlDataAccess.Query<object, object>(sql, sqlObject);
+
+            sql = "delete from dbo.Employee where EmployeeId= @employeeId";
+            SqlDataAccess.Query<object, object>(sql, sqlObject);
+        }
+
         public static int CheckLogin(string emailAddress, string password)
         {
             string sql = "select * from dbo.Employee where dbo.Employee.EmailAddress = @emailAddress";
@@ -110,7 +147,17 @@ namespace DataLibrary.BusinessLogic
         }
         public static bool IsManager( int employeeId)
         {
+            if (!EmployeeExists(employeeId)) throw new Exception("no employee of this id exist id= " + employeeId);
             string sql = "select * from dbo.CompanyManager where EmployeeId= @employeeId";
+            List<object> List = SqlDataAccess.Query<object, object>(sql, new { employeeId = employeeId });
+            if (List.Count > 0)
+                return true;
+            else return false;
+        }
+        public static bool IsProjectLeader(int employeeId)
+        {
+            if (!EmployeeExists(employeeId)) throw new Exception("no employee of this id exist id= " + employeeId);
+            string sql = "select * from dbo.Project where ProjectLeaderId = @employeeId";
             List<object> List = SqlDataAccess.Query<object, object>(sql, new { employeeId = employeeId });
             if (List.Count > 0)
                 return true;
@@ -137,14 +184,27 @@ namespace DataLibrary.BusinessLogic
             {
                 string sql = "select FirstName from dbo.Employee where EmployeeId = @id;";
                 List<string> list = SqlDataAccess.Query<string, object>(sql, new { id = id });
+                if (list.Count == 0)
+                    throw new Exception("there is no Employee of the id =" + id);
                 return list[0];
             }
             else
             {
                 string sql = "select ProjectName from dbo.Project where ProjectId = @id";
                 List<string> list = SqlDataAccess.Query<string, object>(sql, new { id = id });
+                if (list.Count == 0)
+                    throw new Exception("there is no Project of the id =" + id);
                 return list[0];
             }
+        }
+        public static bool EmployeeExists(int employeeId)
+        {
+            string sql = "select * from dbo.Employee where employeeId= @employeeID";
+            List<DataLibrary.Models.Employee> returnList = SqlDataAccess.Query<DataLibrary.Models.Employee, object>
+                (sql,new { employeeID = employeeId });
+            if (returnList.Count > 0)
+                return true;
+            else return false;
         }
     }
 }

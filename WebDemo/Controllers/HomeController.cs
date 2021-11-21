@@ -229,10 +229,15 @@ namespace WebDemo.Controllers
                 int noOfRecordsInserted = DataLibrary.BusinessLogic.EmployeeProcessor.CreateEmployee(
                     employee.firstName, employee.lastName, employee.emailAddress,
                         employee.phoneNo, employee.dateOfBirth, employee.salary, employee.password,
-                        employee.leavesAvailable, employee.credits, "companyName");
+                        employee.leavesAvailable, employee.credits, "SomeCompany10");
                 return RedirectToAction("Employees","Home");
             }
             return View();
+        }
+        public ActionResult FireEmployee(int employeeId)
+        {
+            DataLibrary.BusinessLogic.EmployeeProcessor.FireEmployee(employeeId);
+            return RedirectToAction("Employees");
         }
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -241,8 +246,8 @@ namespace WebDemo.Controllers
         //    if (ModelState.IsValid)
         //    {
         //        int forBr =DataLibrary.BusinessLogic.EmployeeProcessor.CreateEmployee(model.EmployeeID, 
-        //            model.FirstName,model.LastName, model.EmailAddress);
-        //        return RedirectToAction("Index");
+        //            model.FirstName,model.LastNameod, mel.EmailAddress);
+        //        return RedirectToAct"Indeion(x");
         //    }
         //    return View();
         //}
