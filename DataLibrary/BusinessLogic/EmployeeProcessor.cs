@@ -197,7 +197,8 @@ namespace DataLibrary.BusinessLogic
             List<Project> list = SqlDataAccess.Query<Project ,object>(sql, new { id = id });
             if (list.Count == 0)
                 return null;
-            }
+            else
+                return list[0];
         }
         public static string GetName(int id, bool isEmployee)
         {

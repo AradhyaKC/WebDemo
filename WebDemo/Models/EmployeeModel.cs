@@ -57,11 +57,11 @@ namespace WebDemo.Models
         [Compare("password", ErrorMessage = "Passwords must match")]
         public string confirmPassword { get; set; }
 
-        [Display(Name ="Allot number of leaves")]
+        [Display(Name ="Leaves Available")]
         [Required(ErrorMessage ="number of leaves must be entered" )]
         public int leavesAvailable { get; set; }
 
-        [Display(Name = "Enter number of credits")]
+        [Display(Name = "Credits")]
         [Required(ErrorMessage = "nuumber of credits must be entered")]
         public int credits { get; set; }
     }
