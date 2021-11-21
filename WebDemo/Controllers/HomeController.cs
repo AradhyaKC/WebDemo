@@ -180,7 +180,9 @@ namespace WebDemo.Controllers
         }
         public ActionResult ViewProjects()
         {
-            var data = DataLibrary.BusinessLogic.EmployeeProcessor.ViewProjects();
+            HttpCookie cookie = Request.Cookies.Get("UserInfo");
+            if (cookie == null || cookie["employeeId"] == null) throw new Exception();
+            var data = DataLibrary.BusinessLogic.EmployeeProcessor.ViewProjects(Convert.ToInt32(cookie["employeeId"]));
             List<ProjectModel> list = new List<ProjectModel>();
             foreach(var project in data)
             {

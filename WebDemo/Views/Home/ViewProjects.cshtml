@@ -58,9 +58,19 @@
 
 </table>
 
-<h4>
-    @Html.ActionLink("Add New Project", "CreateProject")
-</h4>
-<h4>
-    @Html.ActionLink("Add Employee To Project", "AddProjectEmployee")
-</h4>
+@{
+    HttpCookie cookie = Request.Cookies.Get("UserInfo");
+    if (cookie != null && cookie["employeeId"] != "")
+    {
+        if (DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(Convert.ToInt32(cookie["employeeId"])))
+        {
+    <h4>
+        @Html.ActionLink("Add New Project", "CreateProject")
+    </h4>
+    <h4>
+        @Html.ActionLink("Add Employee To Project", "AddProjectEmployee")
+    </h4>
+        }
+    }
+
+}

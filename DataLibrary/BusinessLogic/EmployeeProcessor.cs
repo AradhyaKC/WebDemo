@@ -105,14 +105,30 @@ namespace DataLibrary.BusinessLogic
             string sql = @"insert into dbo.Project values(@projectName, @projectLeaderId, @description, @companyName);";
             return SqlDataAccess.SaveData(sql, project);
         }
-        public static List<Project> ViewProjects()
+        public static List<Project> ViewProjects(int employeeId)
         {
-            string sql = "select * from dbo.Project;";
-            return SqlDataAccess.LoadData<Project>(sql);
+            var employee = GetEmployeeModel(employeeId);
+            string sql;
+            if (IsManager(employeeId))
+            {
+                sql = "select * from dbo.Project where CompanyName = @companyName;";
+                return SqlDataAccess.Query<Project, object>(sql, new { companyName = employee.companyName });
+            }
+            else
+            {
+                sql = "select ProjectId from dbo.WorksOn where EmployeeId = @id;";
+                var projectIds = SqlDataAccess.Query<int, object>(sql, new { id = employeeId });
+                List<Project> projects = new List<Project>();
+                foreach(var id in projectIds)
+                {
+                    projects.Add(GetProjectModel(id));
+                }
+                return projects;
+            }
         }
         public static List<WorksOn> ViewProjectTeam(int projectId)
         {
-            string sql = "select * from dbo.WorksOn where projectId = @projectId;";
+            string sql = "select * from dbo.WorksOn where ProjectId = @projectId;";
             return SqlDataAccess.Query<WorksOn,object>(sql ,new { projectId = projectId });
         }
 
