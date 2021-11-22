@@ -12,6 +12,7 @@ CREATE TABLE [dbo].[Employee]
     [LeavesAvailable] INT NOT NULL, 
     [Credits] INT NOT NULL, 
     [CompanyName] VARCHAR(50) NOT NULL,
+    [Department] VARCHAR(50) NOT NULL, 
     PRIMARY KEY (EmployeeId),
     FOREIGN KEY (CompanyName) References Company(CompanyName)
 )
