@@ -367,6 +367,62 @@ namespace WebDemo.Controllers
 
             return RedirectToAction("Index");
         }
+        public ActionResult EditProject(int projectId)
+        {
+            var project = DataLibrary.BusinessLogic.EmployeeProcessor.GetProject(projectId);
+            var projectModel = new ProjectModel()
+            {
+                projectId = project.projectId,
+                companyName = project.companyName,
+                description = project.description,
+                projectLeaderId = project.projectLeaderId,
+                projectLeaderName = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(project.projectLeaderId).firstName,
+                projectName = project.projectName
+            };
+            return View(projectModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProject(ProjectModel projectModel)
+        {
+            if (DataLibrary.BusinessLogic.EmployeeProcessor.EditProject(projectModel.projectId, projectModel.projectName, projectModel.projectLeaderId,
+                projectModel.description, projectModel.companyName))
+            {
+                return RedirectToAction("ViewProjects");
+            }
+            else
+            {
+                throw new Exception();
+            }
+        }
+        public ActionResult EditProjectEmployee(int employeeId,int projectId)
+        {
+            var projectEmployee = DataLibrary.BusinessLogic.EmployeeProcessor.GetProjectEmployee(employeeId,projectId);
+            var worksOnModel = new WorksOnModel()
+            {
+                employeeId = projectEmployee.employeeId,
+                projectId = projectEmployee.projectId,
+                firstName = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(projectEmployee.employeeId).firstName,
+                role = projectEmployee.role,
+                shiftEndTime = projectEmployee.shiftEndTime,
+                shiftStartTime = projectEmployee.shiftStartTime
+            };
+            return View(worksOnModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProjectEmployee(WorksOnModel worksOnModel)
+        {
+            if (DataLibrary.BusinessLogic.EmployeeProcessor.EditProjectEmployee(worksOnModel.projectId, worksOnModel.employeeId, worksOnModel.role,
+                worksOnModel.shiftStartTime, worksOnModel.shiftEndTime))
+            {
+                return RedirectToAction("ViewProjectTeam",new { projectId = worksOnModel.projectId });
+            }
+            else
+            {
+                throw new Exception();
+            }
+        }
         public ActionResult FireEmployee(int employeeId)
         {
             DataLibrary.BusinessLogic.EmployeeProcessor.FireEmployee(employeeId);

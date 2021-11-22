@@ -76,6 +76,21 @@ namespace DataLibrary.BusinessLogic
             //}
             return true;
         }
+        public static bool EditProject(int projectId, string projectName, int projectLeaderId, string description, string companyName)
+        {
+            Project project = new Project()
+            {
+                projectId = projectId,
+                projectName = projectName,
+                projectLeaderId = projectLeaderId,
+                description = description,
+                companyName = companyName
+            };
+            string sql = @"update dbo.Project set ProjectLeaderId = @projectLeaderId, Description = @description where ProjectId = @projectId";
+            SqlDataAccess.Query<object, Project>(sql, project);
+            return true;
+        }
+
         public static Employee GetEmployee(int employeeId)
         {
             if (!EmployeeExists(employeeId)) throw new Exception("Employee of this id does not exist , id =" + employeeId);
@@ -158,6 +173,21 @@ namespace DataLibrary.BusinessLogic
             };
             string sql = @"insert into dbo.WorksOn values(@employeeId,@projectId,@role,@shiftStartTime,@shiftEndTime);";
             return SqlDataAccess.SaveData(sql, worksOn);
+        }
+        public static bool EditProjectEmployee(int projectId, int employeeId, string role, DateTime shiftStartTime, DateTime shiftEndTime)
+        {
+            WorksOn worksOn = new WorksOn()
+            {
+                 employeeId = employeeId,
+                 projectId = projectId,
+                 role = role,
+                 shiftStartTime = shiftStartTime,
+                 shiftEndTime = shiftEndTime
+            };
+            string sql = @"update dbo.WorksOn set Role = @role, ShiftStartTime = @shiftStartTime, ShiftEndTime = @shiftEndTime where
+                          ProjectId = @projectId and EmployeeId = @employeeId;";
+            SqlDataAccess.Query<object, WorksOn>(sql, worksOn);
+            return true;
         }
         public static List<Employee> LoadEmployees()
         {
@@ -252,6 +282,15 @@ namespace DataLibrary.BusinessLogic
         {
             string sql = "select * from dbo.Project where ProjectId = @id;";
             List<Project> list = SqlDataAccess.Query<Project ,object>(sql, new { id = id });
+            if (list.Count == 0)
+                return null;
+            else
+                return list[0];
+        }
+        public static WorksOn GetProjectEmployee(int employeeId,int projectId)
+        {
+            string sql = "select * from dbo.WorksOn where ProjectId = @projectId and EmployeeId = @employeeId;";
+            List<WorksOn> list = SqlDataAccess.Query<WorksOn, object>(sql, new { projectId = projectId, employeeId = employeeId });
             if (list.Count == 0)
                 return null;
             else

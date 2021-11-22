@@ -53,6 +53,9 @@
             <td>
                 @Html.ActionLink("View Project Team", "ViewProjectTeam", "Home", new { projectId = item.projectId }, null)
             </td>
+            <td>
+                @Html.ActionLink("Edit Project", "EditProject", "Home", new { projectId = item.projectId }, null)
+            </td>
         </tr>
     }
 
