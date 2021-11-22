@@ -278,6 +278,23 @@ namespace WebDemo.Controllers
             return RedirectToAction("ViewProjects");
         }
 
+        public ActionResult ViewAttendance(int employeeId)
+        {
+            List<DataLibrary.Models.Attendance> attendances = 
+                DataLibrary.BusinessLogic.EmployeeProcessor.ViewAttendance(employeeId);
+            List<WebDemo.Models.AttendanceModel> attendanceModels = new List<AttendanceModel>();
+            foreach(var attendance in attendances)
+            {
+                attendanceModels.Add(new AttendanceModel
+                {
+                    date = attendance.Date,
+                    CheckInTime=attendance.CheckInTime,
+                    CheckOutTime=attendance.CheckOutTime
+                }) ;
+            }
+            return View(attendanceModels);
+        }
+
         public ActionResult CreateEmployee()
         {
             return View();

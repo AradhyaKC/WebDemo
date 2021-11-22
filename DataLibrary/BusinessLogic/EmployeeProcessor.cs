@@ -285,5 +285,50 @@ namespace DataLibrary.BusinessLogic
                 return true;
             else return false;
         }
+        public static int CheckAttendance(int employeeId)
+        {
+            var sqlObject = new { employeeId = employeeId, date = DateTime.Today };
+            string sql = "select * from dbo.Attendence where EmployeeId = @employeeId and Date=@date";
+            List<Attendance> TodayAttendence = SqlDataAccess.Query<Attendance, object>(sql, sqlObject);
+            if (TodayAttendence.Count == 0)
+            {
+                return 1;
+            }
+            else if (TodayAttendence[0].CheckOutTime == null)
+            {
+                return 2;
+            }
+            else return 3;
+        }
+        public static List<Attendance> ViewAttendance(int employeeId)
+        {
+            string sql = " select Date,CheckInTime,CheckOutTime from dbo.Attendence where EmployeeId = @employeeId";
+            var sqlObject = new { employeeId = employeeId };
+            List<Attendance> attendances = SqlDataAccess.Query<Attendance, object>(sql, sqlObject);
+            return attendances;
+        }
+        public static void RecordAttendance(int employeeId)
+        {
+            var sqlObject = new { employeeId = employeeId, date = DateTime.Today };
+            string sql = "select * from dbo.Attendence where EmployeeId = @employeeId and Date=@date";
+            List<Attendance> TodayAttendence = SqlDataAccess.Query<Attendance, object>(sql, sqlObject);
+            if(TodayAttendence.Count== 0)
+            {
+                var sqlObject1 = new { employeeId = employeeId,today= DateTime.Today, time = DateTime.Now };
+                string sql1 = "insert into dbo.Attendence values (@employeeId,@Date , @time , null)";
+                SqlDataAccess.Query<object, object>(sql1, sqlObject1);
+            } 
+            else if (TodayAttendence[0].CheckOutTime == null)
+            {
+                var sqlObject1 = new { employeeId = employeeId, today = DateTime.Today, time = DateTime.Now };
+                string sql1 = @"update dbo.Attendence set CheckOutTime = @time where EmployeeId=@employeeId
+                                 and Date = @today";
+                SqlDataAccess.Query<object, object>(sql1, sqlObject1);
+            }
+            else if (TodayAttendence[0].CheckOutTime!= null)
+            {
+                throw new Exception("A cal made to Record Time before checking . id = " + employeeId);
+            }
+        }
     }
 }
