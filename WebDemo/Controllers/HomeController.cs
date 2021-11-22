@@ -120,6 +120,12 @@ namespace WebDemo.Controllers
                 var httpCookie= Request.Cookies.Get("UserInfo");
                 if (httpCookie == null) throw new Exception();
                 var companyName = httpCookie["companyName"];
+                if(companyName == "" || companyName==null)
+                {
+                    var Manager =DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee
+                        (Convert.ToInt32(httpCookie["employeeId"]));
+                    companyName = Manager.companyName;
+                }
                 
                 int forBr = DataLibrary.BusinessLogic.EmployeeProcessor.CreateManager(employee.firstName,employee.lastName,employee.emailAddress,
                     employee.phoneNo,employee.dateOfBirth, employee.salary, employee.password,employee.leavesAvailable,employee.credits,companyName);
@@ -220,6 +226,14 @@ namespace WebDemo.Controllers
             return View();
         }
 
+        public ActionResult PromoteEmployee(int employeeId)
+        {
+            if (!DataLibrary.BusinessLogic.EmployeeProcessor.EmployeeExists(employeeId)) throw new Exception("unknown Employee");
+
+            DataLibrary.BusinessLogic.EmployeeProcessor.PromoteEmployeeToManager(employeeId);
+            return RedirectToAction("Employees");
+            
+        }
         public ActionResult ViewProjectTeam(int projectId)
         {
             var data = DataLibrary.BusinessLogic.EmployeeProcessor.ViewProjectTeam(projectId);
