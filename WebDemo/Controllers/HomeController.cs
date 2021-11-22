@@ -137,6 +137,7 @@ namespace WebDemo.Controllers
                 {
                     int employeeId = DataLibrary.BusinessLogic.EmployeeProcessor.CheckLogin(employee.emailAddress, employee.password);
                     httpCookie["employeeId"] = employeeId.ToString();
+                    httpCookie["companyName"] = "";
                     Response.Cookies.Add(httpCookie);
                 }
                 return RedirectToAction("Index");
