@@ -24,7 +24,7 @@ namespace DataLibrary.BusinessLogic
             return SqlDataAccess.SaveData(sql, model);
         }
         public static int CreateEmployee(string firstName,string lastName,string emailAddress,string phoneNo,DateTime dateOfBirth,long salary,string password,
-            int leavesAvailable,int credits,string companyName)
+            int leavesAvailable,int credits,string companyName,string department)
         {
             Employee employee = new Employee()
             {
@@ -37,10 +37,11 @@ namespace DataLibrary.BusinessLogic
                 password = password,
                 leavesAvailable = leavesAvailable,
                 credits = credits,
-                companyName=companyName
+                companyName=companyName,
+                department =department
             };
             string sql = @"insert into dbo.Employee values(@firstName,@lastName,@emailAddress,@phoneNo,@dateOfBirth,@salary,@password,@leavesAvailable,
-                        @credits,@companyName);";
+                        @credits,@companyName,@department);";
             return SqlDataAccess.SaveData(sql, employee);
         }
         public static bool PromoteEmployeeToManager(int employeeId)
@@ -63,9 +64,10 @@ namespace DataLibrary.BusinessLogic
             var tempEmployee = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(employee.employeeId);
             tempEmployee.salary = employee.salary;
             tempEmployee.credits = employee.credits;
+            tempEmployee.department = employee.department;
             tempEmployee.leavesAvailable = employee.leavesAvailable;
             string sql = @"update dbo.Employee set Salary = @salary ,LeavesAvailable= @leavesAvailable,
-                           Credits= @credits where EmployeeId = @employeeId";
+                           Credits= @credits, Department =@department where EmployeeId = @employeeId";
             SqlDataAccess.Query<object, Employee>(sql, tempEmployee);
             //new
             //{
@@ -98,23 +100,27 @@ namespace DataLibrary.BusinessLogic
             var listOfEmployee = SqlDataAccess.Query<Employee, object>(sql, new { employeeId = employeeId });
             return listOfEmployee[0];
         }
-        public static int CreateCompany(string companyName, string motto, DateTime startDate)
+        public static int CreateCompany(string companyName, string motto, DateTime startDate,string address,string emailAddress,string phoneNo)
         {
             Company company = new Company()
             {
                 companyName = companyName,
                 motto = motto,
-                startDate = startDate
+                startDate = startDate,
+                address = address,
+                emailAddress = emailAddress,
+                phoneNo = phoneNo,
+                   
             };
-            string sql = @"insert into dbo.Company values(@companyName, @motto, @startDate);";
+            string sql = @"insert into dbo.Company values(@companyName, @motto, @startDate,@address,@phoneNo,@emailAddress);";
             return SqlDataAccess.SaveData(sql, company);
 
         }
         public static int CreateManager(string firstName, string lastName, string emailAddress, string phoneNo, DateTime dateOfBirth, long salary, string password,
-            int leavesAvailable, int credits, string companyName)
+            int leavesAvailable, int credits, string companyName,string department)
         {
             int forBr = DataLibrary.BusinessLogic.EmployeeProcessor.CreateEmployee(firstName, lastName, emailAddress,
-                    phoneNo, dateOfBirth,salary, password, leavesAvailable, credits, companyName);
+                    phoneNo, dateOfBirth,salary, password, leavesAvailable, credits, companyName,department);
             string sql = " select * from dbo.Employee where dbo.Employee.EmailAddress = @emailAddress;";
             List<DataLibrary.Models.Employee> employeeList = DataLibrary.DataAccess.SqlDataAccess.Query<DataLibrary.Models.Employee,object>
                 (sql, new { emailAddress = emailAddress});
@@ -252,7 +258,6 @@ namespace DataLibrary.BusinessLogic
         }
         public static bool IsManager( int employeeId)
         {
-            if (!EmployeeExists(employeeId)) throw new Exception("no employee of this id exist id= " + employeeId);
             string sql = "select * from dbo.CompanyManager where EmployeeId= @employeeId";
             List<object> List = SqlDataAccess.Query<object, object>(sql, new { employeeId = employeeId });
             if (List.Count > 0)

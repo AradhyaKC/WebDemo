@@ -64,5 +64,9 @@ namespace WebDemo.Models
         [Display(Name = "Credits")]
         [Required(ErrorMessage = "nuumber of credits must be entered")]
         public int credits { get; set; }
+
+        [Display(Name = "Department")]
+        [Required(ErrorMessage = "Department muust be entered")]
+        public string department { get; set; }
     }
 }

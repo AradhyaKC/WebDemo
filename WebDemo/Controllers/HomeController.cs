@@ -80,7 +80,8 @@ namespace WebDemo.Controllers
                     password= employee.password,
                     confirmPassword=employee.password,
                     leavesAvailable= employee.leavesAvailable,
-                    credits= employee.credits
+                    credits= employee.credits,
+                    department = employee.department
                 });
             }
             return View(employeeModels);
@@ -97,7 +98,8 @@ namespace WebDemo.Controllers
         {
             if (ModelState.IsValid)
             {
-                int forBr = DataLibrary.BusinessLogic.EmployeeProcessor.CreateCompany(company.companyName,company.motto,company.startDate);
+                int forBr = DataLibrary.BusinessLogic.EmployeeProcessor.CreateCompany(company.companyName,company.motto,company.startDate,
+                    company.address,company.emailAddress,company.phoneNo);
                 HttpCookie cookie = new HttpCookie("UserInfo");
                 cookie["companyName"] = company.companyName;
                 Response.Cookies.Add(cookie);
@@ -120,15 +122,23 @@ namespace WebDemo.Controllers
                 var httpCookie= Request.Cookies.Get("UserInfo");
                 if (httpCookie == null) throw new Exception();
                 var companyName = httpCookie["companyName"];
+                bool firstManager = true;
                 if(companyName == "" || companyName==null)
                 {
                     var Manager =DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee
                         (Convert.ToInt32(httpCookie["employeeId"]));
                     companyName = Manager.companyName;
+                    firstManager = false;
                 }
-                
                 int forBr = DataLibrary.BusinessLogic.EmployeeProcessor.CreateManager(employee.firstName,employee.lastName,employee.emailAddress,
-                    employee.phoneNo,employee.dateOfBirth, employee.salary, employee.password,employee.leavesAvailable,employee.credits,companyName);
+                    employee.phoneNo,employee.dateOfBirth, employee.salary, employee.password,employee.leavesAvailable,employee.credits,companyName,
+                    employee.department);
+                if (firstManager)
+                {
+                    int employeeId = DataLibrary.BusinessLogic.EmployeeProcessor.CheckLogin(employee.emailAddress, employee.password);
+                    httpCookie["employeeId"] = employeeId.ToString();
+                    Response.Cookies.Add(httpCookie);
+                }
                 return RedirectToAction("Index");
             }
             return View();
@@ -296,7 +306,7 @@ namespace WebDemo.Controllers
                 int noOfRecordsInserted = DataLibrary.BusinessLogic.EmployeeProcessor.CreateEmployee(
                     employee.firstName, employee.lastName, employee.emailAddress,
                         employee.phoneNo, employee.dateOfBirth, employee.salary, employee.password,
-                        employee.leavesAvailable, employee.credits, manager.companyName);
+                        employee.leavesAvailable, employee.credits, manager.companyName,employee.department);
                 return RedirectToAction("Employees","Home");
             }
             return View();
@@ -316,7 +326,8 @@ namespace WebDemo.Controllers
                 salary = employee.salary,
                 password = employee.password,
                 leavesAvailable = employee.leavesAvailable,
-                credits = employee.credits
+                credits = employee.credits,
+                department = employee.department
             };
             return View(Webemployee);
         }
@@ -340,7 +351,8 @@ namespace WebDemo.Controllers
                 password = employeeModel.password,
                 leavesAvailable = employeeModel.leavesAvailable,
                 credits = employeeModel.credits,
-                companyName = ""
+                companyName = "",
+                department = employeeModel.department
             };
            
              if (DataLibrary.BusinessLogic.EmployeeProcessor.EditEmployee(employee))

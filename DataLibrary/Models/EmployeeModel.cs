@@ -25,6 +25,7 @@ namespace DataLibrary.Models
         public int leavesAvailable { get; set; }
         public int credits { get; set; }
         public string companyName { get; set; }
+        public string department { get; set; }
 
     }
         
