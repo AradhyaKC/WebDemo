@@ -214,6 +214,8 @@
     <Content Include="Views\Home\EditEmployee.cshtml" />
     <Content Include="Views\Home\ViewProjectTeam.cshtml" />
     <Content Include="Views\Home\AddProjectEmployee.cshtml" />
+    <Content Include="Views\Home\EditProject.cshtml" />
+    <Content Include="Views\Home\EditProjectEmployee.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
