@@ -374,5 +374,12 @@ namespace DataLibrary.BusinessLogic
                 throw new Exception("A cal made to Record Time before checking . id = " + employeeId);
             }
         }
+        public static Company GetCompany(int employeeId)
+        {
+            string sql = "select CompanyName from dbo.Employee where EmployeeId = @employeeId;";
+            var companyName = SqlDataAccess.Query<string, object>(sql, new { employeeId = employeeId });
+            sql = "select * from dbo.Company where CompanyName = @companyName;";
+            return SqlDataAccess.Query<Company, object>(sql, new { companyName = companyName })[0];
+        }
     }
 }

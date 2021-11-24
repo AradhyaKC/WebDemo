@@ -1,18 +1,10 @@
 ﻿@model WebDemo.Models.EmployeeModel
 
-@{
-    ViewBag.Title = "CreateEmployee";
-}
-
-<h2>CreateEmployee</h2>
-
-
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>EmployeeModel</h4>
     <hr />
     <div class="form-group">
         @Html.LabelFor(model => model.firstName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -116,9 +108,6 @@
 </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
