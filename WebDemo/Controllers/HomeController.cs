@@ -289,7 +289,7 @@ namespace WebDemo.Controllers
             return RedirectToAction("ViewProjects");
         }
 
-        public ActionResult ViewAttendance(int employeeId =7)
+        public ActionResult ViewAttendance(int employeeId =1)
         {
             List<DataLibrary.Models.Attendance> attendances = 
                 DataLibrary.BusinessLogic.EmployeeProcessor.ViewAttendance(employeeId);
