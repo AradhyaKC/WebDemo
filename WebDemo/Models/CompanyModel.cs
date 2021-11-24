@@ -20,5 +20,19 @@ namespace WebDemo.Models
         [Display(Name = "Date when company was started")]
         [Required(ErrorMessage = "Start date should be entered")]
         public DateTime startDate { get; set; }
+
+        [Display(Name ="Address")]
+        [Required(ErrorMessage ="Address must be entered")]
+        public string address { get; set; }
+        
+        [Display(Name ="Phone No")]
+        [DataType(DataType.PhoneNumber)]
+        [Required(ErrorMessage ="Phone no must be entered")]
+        public string phoneNo { get; set; }
+
+        [DataType(DataType.EmailAddress)]
+        [Display(Name ="Email Address")]
+        [Required(ErrorMessage ="Email Address must be entered")]
+        public string emailAddress { get; set; }
     }
 }

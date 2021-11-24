@@ -58,70 +58,76 @@
         <th>
             @Html.DisplayNameFor(model => model.credits)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.department)
+        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.employeeId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.firstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.lastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.emailAddress)
-        </td>
-        @*<td>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.employeeId)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.firstName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.lastName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.emailAddress)
+    </td>
+    @*<td>
             @Html.DisplayFor(modelItem => item.confirmEmailAddress)
         </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.phoneNo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dateOfBirth)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.salary)
-        </td>
-        @*<td>
+    <td>
+        @Html.DisplayFor(modelItem => item.phoneNo)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.dateOfBirth)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.salary)
+    </td>
+    @*<td>
             @Html.DisplayFor(modelItem => item.password)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.confirmPassword)
         </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.leavesAvailable)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.credits)
-        </td>
-        <td>
-            @{
+    <td>
+        @Html.DisplayFor(modelItem => item.leavesAvailable)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.credits)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.department)
+    </td>
+    <td>
+        @{
 
-                HttpCookie cookie1 = Request.Cookies.Get("UserInfo");
-                if (cookie != null &&
-                    DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(Convert.ToInt32(cookie1["employeeId"])))
+            HttpCookie cookie1 = Request.Cookies.Get("UserInfo");
+            if (cookie != null &&
+                DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(Convert.ToInt32(cookie1["employeeId"])))
+            {
+                if (!DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(item.employeeId))
                 {
-                    if (!DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(item.employeeId))
-                    {
-                        @Html.ActionLink("Promote", "PromoteEmployee", new { employeeID = item.employeeId });
-                    }
-                    <i> | </i>
-                    @Html.ActionLink("Edit", "EditEmployee", new { employeeID = item.employeeId }) ;
-                    <i> | </i>
-                    if (DataLibrary.BusinessLogic.EmployeeProcessor.CanFireEmployee(item.employeeId))
-                    {
-                        @Html.ActionLink("Fire Employee", "FireEmployee", "Home", new { employeeID = item.employeeId }, null);
-                    }
+                    @Html.ActionLink("Promote", "PromoteEmployee", new { employeeID = item.employeeId });
+                }
+                <i> | </i>
+                @Html.ActionLink("Edit", "EditEmployee", new { employeeID = item.employeeId }) ;
+                <i> | </i>
+                if (DataLibrary.BusinessLogic.EmployeeProcessor.CanFireEmployee(item.employeeId))
+                {
+                    @Html.ActionLink("Fire Employee", "FireEmployee", "Home", new { employeeID = item.employeeId }, null);
                 }
             }
-        </td>
-    
-        </tr>
+        }
+    </td>
+
+</tr>
 }
 
 </table>
