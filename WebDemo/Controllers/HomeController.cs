@@ -12,15 +12,7 @@ namespace WebDemo.Controllers
     {
         public ActionResult Index()
         {
-            HttpCookie cookie = Request.Cookies.Get("UserInfo");
-            if(cookie != null && cookie["employeeId"] !="")
-            {
-                ViewBag.Title = "Logged in";
-            }
-            else
-            {
-                ViewBag.Title = "Home Page";
-            }
+            ViewBag.Title = "EMS";
             return View();
         }
 
@@ -33,9 +25,19 @@ namespace WebDemo.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Changed";
-
-            return View();
+            HttpCookie cookie = Request.Cookies.Get("UserInfo");
+            if (cookie == null || cookie["employeeId"] == null) throw new Exception();
+            var company = DataLibrary.BusinessLogic.EmployeeProcessor.GetCompany(Convert.ToInt32(cookie["employeeId"]));
+            CompanyModel companyModel = new CompanyModel()
+            {
+                companyName = company.companyName,
+                address = company.address,
+                emailAddress = company.emailAddress,
+                motto = company.motto,
+                phoneNo = company.phoneNo,
+                startDate = company.startDate
+            };
+            return View("ContactInfo",companyModel);
         }
         public ActionResult SignUp()
         {

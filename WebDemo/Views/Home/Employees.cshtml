@@ -9,14 +9,6 @@
 <p>
     @{
         HttpCookie cookie = Request.Cookies.Get("UserInfo");
-        if (cookie != null &&
-            DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(Convert.ToInt32(cookie["employeeId"])))
-        {
-            @Html.ActionLink("Add Employee","CreateEmployee","Home");
-            <br>
-            @Html.ActionLink("Add Manager", "CreateManager", "Home");
-            
-        }
     }
 
 </p>
@@ -35,8 +27,8 @@
             @Html.DisplayNameFor(model => model.emailAddress)
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.confirmEmailAddress)
-        </th>*@
+                @Html.DisplayNameFor(model => model.confirmEmailAddress)
+            </th>*@
         <th>
             @Html.DisplayNameFor(model => model.phoneNo)
         </th>
@@ -47,11 +39,11 @@
             @Html.DisplayNameFor(model => model.salary)
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.password)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.confirmPassword)
-        </th>*@
+                @Html.DisplayNameFor(model => model.password)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.confirmPassword)
+            </th>*@
         <th>
             @Html.DisplayNameFor(model => model.leavesAvailable)
         </th>
@@ -64,70 +56,79 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.employeeId)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.firstName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.lastName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.emailAddress)
-    </td>
-    @*<td>
-            @Html.DisplayFor(modelItem => item.confirmEmailAddress)
-        </td>*@
-    <td>
-        @Html.DisplayFor(modelItem => item.phoneNo)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.dateOfBirth)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.salary)
-    </td>
-    @*<td>
-            @Html.DisplayFor(modelItem => item.password)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.confirmPassword)
-        </td>*@
-    <td>
-        @Html.DisplayFor(modelItem => item.leavesAvailable)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.credits)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.department)
-    </td>
-    <td>
-        @{
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.employeeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.firstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.lastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.emailAddress)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.confirmEmailAddress)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.phoneNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dateOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.salary)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.password)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.confirmPassword)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.leavesAvailable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.credits)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.department)
+            </td>
+            <td>
+                @{
 
-            HttpCookie cookie1 = Request.Cookies.Get("UserInfo");
-            if (cookie != null &&
-                DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(Convert.ToInt32(cookie1["employeeId"])))
-            {
-                if (!DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(item.employeeId))
-                {
-                    @Html.ActionLink("Promote", "PromoteEmployee", new { employeeID = item.employeeId });
+                    HttpCookie cookie1 = Request.Cookies.Get("UserInfo");
+                    if (cookie != null &&
+                        DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(Convert.ToInt32(cookie1["employeeId"])))
+                    {
+                        if (!DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(item.employeeId))
+                        {
+                            @Html.ActionLink("Promote", "PromoteEmployee", new { employeeID = item.employeeId });
+                        }
+                        <i> | </i>
+                        @Html.ActionLink("Edit", "EditEmployee", new { employeeID = item.employeeId }) ;
+                        <i> | </i>
+                        if (DataLibrary.BusinessLogic.EmployeeProcessor.CanFireEmployee(item.employeeId))
+                        {
+                            @Html.ActionLink("Fire Employee", "FireEmployee", "Home", new { employeeID = item.employeeId }, null);
+                        }
+                    }
                 }
-                <i> | </i>
-                @Html.ActionLink("Edit", "EditEmployee", new { employeeID = item.employeeId }) ;
-                <i> | </i>
-                if (DataLibrary.BusinessLogic.EmployeeProcessor.CanFireEmployee(item.employeeId))
-                {
-                    @Html.ActionLink("Fire Employee", "FireEmployee", "Home", new { employeeID = item.employeeId }, null);
-                }
-            }
-        }
-    </td>
+            </td>
 
-</tr>
-}
+        </tr>
+    }
 
 </table>
+@{
+    if (cookie != null &&
+    DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(Convert.ToInt32(cookie["employeeId"])))
+    {
+        <h4><a href="/Home/CreateEmployee" class="btn btn-default">Add Employee</a></h4>
+        <h4><a href="/Home/CreateManager"  class="btn btn-default">Add Manager</a></h4>
+    }
+}

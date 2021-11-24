@@ -1,12 +1,5 @@
 ﻿@model WebDemo.Models.EmployeeModel
 
-@{
-    ViewBag.Title = "CreateManager";
-}
-
-<h2>CreateManager</h2>
-
-
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
@@ -116,10 +109,6 @@
     </div>
 </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

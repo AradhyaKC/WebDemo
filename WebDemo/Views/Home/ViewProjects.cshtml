@@ -67,12 +67,8 @@
     {
         if (DataLibrary.BusinessLogic.EmployeeProcessor.IsManager(Convert.ToInt32(cookie["employeeId"])))
         {
-    <h4>
-        @Html.ActionLink("Add New Project", "CreateProject")
-    </h4>
-    <h4>
-        @Html.ActionLink("Add Employee To Project", "AddProjectEmployee")
-    </h4>
+            <h4><a href="/Home/CreateProject" class="btn btn-default">Add New Project</a></h4>
+            <h4><a href="/Home/CreateProject" class="btn btn-default">Add Employee To Project</a></h4>
         }
     }
 

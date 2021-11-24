@@ -2,8 +2,8 @@
 (
 	[EmployeeId] INT NOT NULL, 
     [Date] DATE NOT NULL, 
-    [CheckInTime] TIME NULL, 
-    [CheckOutTime] TIME NULL
+    [CheckInTime] DATETIME NULL, 
+    [CheckOutTime] DATETIME NULL
     PRIMARY KEY (EmployeeId, Date),
     FOREIGN KEY (EmployeeId) References Employee(EmployeeId) 
 )

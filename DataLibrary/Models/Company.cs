@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DataLibrary.Models
 {
-    class Company
+    public class Company
     {
         public string companyName { get; set; }
         public string motto { get; set; }
