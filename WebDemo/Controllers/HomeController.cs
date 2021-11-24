@@ -278,7 +278,7 @@ namespace WebDemo.Controllers
             return RedirectToAction("ViewProjects");
         }
 
-        public ActionResult ViewAttendance(int employeeId)
+        public ActionResult ViewAttendance(int employeeId =7)
         {
             List<DataLibrary.Models.Attendance> attendances = 
                 DataLibrary.BusinessLogic.EmployeeProcessor.ViewAttendance(employeeId);
@@ -294,7 +294,11 @@ namespace WebDemo.Controllers
             }
             return View(attendanceModels);
         }
-
+        public ActionResult RecordAttendance(int employeeId)
+        {
+            DataLibrary.BusinessLogic.EmployeeProcessor.RecordAttendance(employeeId);
+            return RedirectToAction("ViewAttendance", employeeId);
+        }
         public ActionResult CreateEmployee()
         {
             return View();
