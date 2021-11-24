@@ -157,6 +157,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AttendanceModel.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -214,6 +215,7 @@
     <Content Include="Views\Home\EditEmployee.cshtml" />
     <Content Include="Views\Home\ViewProjectTeam.cshtml" />
     <Content Include="Views\Home\AddProjectEmployee.cshtml" />
+    <Content Include="Views\Home\ViewAttendance.cshtml" />
     <Content Include="Views\Home\EditProject.cshtml" />
     <Content Include="Views\Home\EditProjectEmployee.cshtml" />
     <Content Include="Views\Home\ContactInfo.cshtml" />
