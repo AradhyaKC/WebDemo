@@ -21,9 +21,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Logout", "LogOut", "Home")</li>
+                    <li>@Html.ActionLink("Personal Info", "PersonalInfo", "Home")</li>
                     <li>@Html.ActionLink("View Projects", "ViewProjects", "Home")</li>
                     <li>@Html.ActionLink("View Employees", "Employees", "Home")</li>
                     @{
@@ -31,6 +30,8 @@
                         int employeeId = Convert.ToInt32(cookie["employeeId"]);
                         <li>@Html.ActionLink("View Attendance", "ViewAttendance",new { employeeId= employeeId })</li>
                     }
+
+                    <li>@Html.ActionLink("Logout", "LogOut", "Home")</li>
 
                 </ul>
             </div>
