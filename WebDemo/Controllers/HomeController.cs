@@ -523,6 +523,48 @@ namespace WebDemo.Controllers
             DataLibrary.BusinessLogic.EmployeeProcessor.FireEmployee(employeeId);
             return RedirectToAction("Employees");
         }
+        public ActionResult CreateLeave()
+        {
+            ViewBag.Title = "";
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateLeave(LeaveModel leaveModel)
+        {
+            HttpCookie cookie = Request.Cookies.Get("UserInfo");
+            if (cookie == null || cookie["employeeId"] == null) throw new Exception();
+            leaveModel.employeeId = Convert.ToInt32(cookie["employeeId"]);
+            int noOfDays = (int)(leaveModel.endDate - leaveModel.startDate).TotalSeconds / 86400 + 1;
+            if(DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(leaveModel.employeeId).leavesAvailable < noOfDays)
+            {
+                ViewBag.Title = "Not enough leaves available.";
+                return View();
+            }
+            if((leaveModel.endDate.Ticks - leaveModel.startDate.Ticks) < 0)
+            {
+                ViewBag.Title = "End date should be later than start date.";
+                return View();
+            }
+            DataLibrary.BusinessLogic.EmployeeProcessor.CreateLeave(leaveModel.employeeId,leaveModel.startDate,leaveModel.endDate,leaveModel.reason);
+            return RedirectToAction("ViewAttendance", new { employeeId = leaveModel.employeeId });
+        }
+        public ActionResult ViewLeave(int employeeId)
+        {
+            var data = DataLibrary.BusinessLogic.EmployeeProcessor.ViewLeave(employeeId);
+            List<LeaveModel> list = new List<LeaveModel>();
+            foreach(var item in data)
+            {
+                list.Add(new LeaveModel()
+                {
+                    employeeId = item.employeeId,
+                    startDate = item.startDate,
+                    endDate = item.endDate,
+                    reason = item.reason
+                });
+            }
+            return View(list);
+        }
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public ActionResult SignUp(EmployeeModel model)

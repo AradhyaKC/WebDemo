@@ -21,6 +21,7 @@ namespace WebDemo.Models
         [Required(ErrorMessage = "Start date should be entered")]
         public DateTime startDate { get; set; }
 
+        [DataType(DataType.MultilineText)]
         [Display(Name ="Address")]
         [Required(ErrorMessage ="Address must be entered")]
         public string address { get; set; }

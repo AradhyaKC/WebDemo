@@ -161,6 +161,7 @@
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
+    <Compile Include="Models\LeaveModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Models\WorksOnModel.cs" />
@@ -222,6 +223,8 @@
     <Content Include="Views\Home\ContactInfo.cshtml" />
     <Content Include="Views\Home\PersonalInfo.cshtml" />
     <Content Include="Views\Home\ChangePassword.cshtml" />
+    <Content Include="Views\Home\CreateLeave.cshtml" />
+    <Content Include="Views\Home\ViewLeave.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

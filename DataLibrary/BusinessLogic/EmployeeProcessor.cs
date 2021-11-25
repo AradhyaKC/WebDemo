@@ -381,6 +381,26 @@ namespace DataLibrary.BusinessLogic
                 throw new Exception("A cal made to Record Time before checking . id = " + employeeId);
             }
         }
+        public static int CreateLeave(int employeeId,DateTime startDate,DateTime endDate,string reason)
+        {
+            Leave leave = new Leave()
+            {
+                employeeId = employeeId,
+                startDate = startDate,
+                endDate = endDate,
+                reason = reason
+            };
+            string sql = "insert into dbo.Leave values(@employeeId,@startDate,@endDate,@reason);";
+            int noOfDays = (int)(leave.endDate - leave.startDate).TotalSeconds / 86400 + 1;
+            string sql1 = "update dbo.Employee set LeavesAvailable = LeavesAvailable -@noOfDays where EmployeeId = @employeeId;";
+            SqlDataAccess.Query<object, object>(sql1, new { noOfDays = noOfDays, employeeId = leave.employeeId });
+            return SqlDataAccess.SaveData(sql, leave);
+        }
+        public static List<Leave> ViewLeave(int employeeId)
+        {
+            string sql = "select * from dbo.Leave where EmployeeId = @employeeId;";
+            return SqlDataAccess.Query<Leave, object>(sql, new { employeeId = employeeId });
+        }
         public static Company GetCompany(int employeeId)
         {
             string sql = "select CompanyName from dbo.Employee where EmployeeId = @employeeId;";

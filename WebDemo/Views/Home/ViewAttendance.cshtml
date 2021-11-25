@@ -15,17 +15,21 @@
         int tempint = DataLibrary.BusinessLogic.EmployeeProcessor.CheckAttendance(employeeCookieId);
         if (tempint == 1)
         {
-        @Html.ActionLink(" Check In Time", "RecordAttendance", "Home");
+            <h4><a href="/Home/RecordAttendance" class="btn btn-default">Check In Time</a></h4>
         }
-        else if (tempint == 2) {
-        @Html.ActionLink(" Check Out Time", "RecordAttendance", "Home");
+        else if (tempint == 2)
+        {
+            <h4><a href="/Home/RecordAttendance" class="btn btn-default">Check Out Time</a></h4>
         }
-        else if (tempint == 3) {
+        else if (tempint == 3)
+        {
             <h4>  Attendance recorded </h4>
-            };
+        };
 
-        }
+        <h4><a href="/Home/CreateLeave" class="btn btn-default">Apply For Leave</a></h4>
+        <h4><a href="/Home/ViewLeave?employeeId=@employeeId" class="btn btn-default">View Leave</a></h4>
     }
+}
 
 @*<p>
         @Html.ActionLink("Create New", "Create")
