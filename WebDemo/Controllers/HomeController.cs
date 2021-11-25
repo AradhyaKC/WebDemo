@@ -314,11 +314,19 @@ namespace WebDemo.Controllers
             return RedirectToAction("ViewProjects");
         }
 
-        public ActionResult ViewAttendance(int employeeId =7)
+        //public ActionResult ViewAttendance()
+        //{
+        //    HttpCookie cookie = Request.Cookies.Get("UserInfo");
+        //    if (cookie == null) throw new Exception("Cookie not found");
+        //    int employeeId = Convert.ToInt32(cookie["employeeId"]);
+        //    return ViewAttendance(employeeId);
+        //}
+        public ActionResult ViewAttendance(int employeeId)
         {
             List<DataLibrary.Models.Attendance> attendances = 
                 DataLibrary.BusinessLogic.EmployeeProcessor.ViewAttendance(employeeId);
             List<WebDemo.Models.AttendanceModel> attendanceModels = new List<AttendanceModel>();
+            ViewBag.employeeId = Convert.ToString(employeeId);
             foreach(var attendance in attendances)
             {
                 attendanceModels.Add(new AttendanceModel
@@ -330,10 +338,13 @@ namespace WebDemo.Controllers
             }
             return View(attendanceModels);
         }
-        public ActionResult RecordAttendance(int employeeId)
+        public ActionResult RecordAttendance()
         {
+            HttpCookie cookie = Request.Cookies.Get("UserInfo");
+            if (cookie == null) throw new Exception("null cookie");
+            int employeeId = Convert.ToInt32(cookie["employeeId"]);
             DataLibrary.BusinessLogic.EmployeeProcessor.RecordAttendance(employeeId);
-            return RedirectToAction("ViewAttendance", employeeId);
+            return RedirectToAction("ViewAttendance",new { employeeId = employeeId });
         }
         public ActionResult CreateEmployee()
         {

@@ -338,7 +338,7 @@ namespace DataLibrary.BusinessLogic
             {
                 return 1;
             }
-            else if (TodayAttendence[0].CheckOutTime == null)
+            else if (TodayAttendence[0].CheckOutTime.Year == 0001)
             {
                 return 2;
             }
@@ -359,10 +359,10 @@ namespace DataLibrary.BusinessLogic
             if(TodayAttendence.Count== 0)
             {
                 var sqlObject1 = new { employeeId = employeeId,today= DateTime.Today, time = DateTime.Now };
-                string sql1 = "insert into dbo.Attendence values (@employeeId,@Date , @time , null)";
+                string sql1 = "insert into dbo.Attendence values (@employeeId,@today , @time , null)";
                 SqlDataAccess.Query<object, object>(sql1, sqlObject1);
             } 
-            else if (TodayAttendence[0].CheckOutTime == null)
+            else if (TodayAttendence[0].CheckOutTime.Year == 0001)
             {
                 var sqlObject1 = new { employeeId = employeeId, today = DateTime.Today, time = DateTime.Now };
                 string sql1 = @"update dbo.Attendence set CheckOutTime = @time where EmployeeId=@employeeId

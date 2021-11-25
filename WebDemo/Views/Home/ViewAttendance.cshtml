@@ -1,17 +1,38 @@
 ﻿@model IEnumerable<WebDemo.Models.AttendanceModel>
 
 @{
-    ViewBag.Title = "ViewAttendance";
+    ViewBag.Title = "View Attendance";
 }
 
 <h2>ViewAttendance</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-    @{ 
-        int temp = employeeId;
+@{
+    HttpCookie cookie = Request.Cookies.Get("UserInfo");
+    int employeeCookieId = Convert.ToInt32(cookie["employeeId"]);
+    int employeeId = Convert.ToInt32(ViewBag.employeeId);
+    if (employeeId == employeeCookieId)
+    {
+        int tempint = DataLibrary.BusinessLogic.EmployeeProcessor.CheckAttendance(employeeCookieId);
+        if (tempint == 1)
+        {
+        @Html.ActionLink(" Check In Time", "RecordAttendance", "Home");
+        }
+        else if (tempint == 2) {
+        @Html.ActionLink(" Check Out Time", "RecordAttendance", "Home");
+        }
+        else if (tempint == 3) {
+            <h4>  Attendance recorded </h4>
+            };
+
+        }
     }
-</p>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+        @{
+            int temp = employeeId;
+        }
+    </p>*@
 <table class="table">
     <tr>
         <th>
@@ -26,23 +47,19 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CheckInTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CheckOutTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CheckInTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CheckOutTime)
+            </td>
+        </tr>
+    }
 
 </table>

@@ -25,7 +25,12 @@
                     <li>@Html.ActionLink("Personal Info", "PersonalInfo", "Home")</li>
                     <li>@Html.ActionLink("View Projects", "ViewProjects", "Home")</li>
                     <li>@Html.ActionLink("View Employees", "Employees", "Home")</li>
-                    <li>@Html.ActionLink("View Attendance", "ViewAttendance", 7)</li>
+                    @{
+                        HttpCookie cookie = Request.Cookies.Get("UserInfo");
+                        int employeeId = Convert.ToInt32(cookie["employeeId"]);
+                        <li>@Html.ActionLink("View Attendance", "ViewAttendance",new { employeeId= employeeId })</li>
+                    }
+
                     <li>@Html.ActionLink("Logout", "LogOut", "Home")</li>
 
                 </ul>
