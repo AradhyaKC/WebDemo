@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebDemo.Models;
 using DataLibrary;
+using System.Net.Mail;
 
 namespace WebDemo.Controllers
 {
@@ -365,6 +366,20 @@ namespace WebDemo.Controllers
                     employee.firstName, employee.lastName, employee.emailAddress,
                         employee.phoneNo, employee.dateOfBirth, employee.salary, employee.password,
                         employee.leavesAvailable, employee.credits, manager.companyName,employee.department);
+
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress("MinorProject587@gmail.com");
+                mailMessage.To.Add(new MailAddress(employee.emailAddress));
+                mailMessage.IsBodyHtml = true;
+                mailMessage.Body = @" <h4> Hello " + employee.firstName + " " + employee.lastName + " , Your Login credentials for you work account are :"
+                                    + " Email : " + employee.emailAddress + "Password : " + employee.password + " </h4>";
+                mailMessage.Subject = "Login Credentials ";
+
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+                smtpClient.Credentials = new System.Net.NetworkCredential("MinorProject587@gmail.com", "19BCA41051587");
+                smtpClient.EnableSsl = true;
+                smtpClient.Send(mailMessage);
+
                 return RedirectToAction("Employees","Home");
             }
             return View();
