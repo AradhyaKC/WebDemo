@@ -435,6 +435,33 @@ namespace WebDemo.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public ActionResult ChangePassword()
+        {
+            ViewBag.Error = "";
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                HttpCookie cookie = Request.Cookies.Get("UserInfo");
+                int employeeId = Convert.ToInt32(cookie["employeeId"]);
+                DataLibrary.Models.Employee employee =
+                    DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(employeeId);
+                if(employee.password != model.oldpassword)
+                {
+                    ViewBag.Error = " Incorrect Old password";
+                    return View();
+                }
+                DataLibrary.BusinessLogic.EmployeeProcessor.ChangePassword(employeeId, model.password);
+                return RedirectToAction("PersonalInfo");
+            }
+            return RedirectToAction("Index");
+        }
         public ActionResult EditProject(int projectId)
         {
             var project = DataLibrary.BusinessLogic.EmployeeProcessor.GetProject(projectId);

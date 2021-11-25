@@ -85,3 +85,14 @@
 
     </dl>
 </div>
+
+
+@{
+    HttpCookie cookie = Request.Cookies.Get("UserInfo");
+    if (cookie != null && cookie["employeeId"] != "")
+    {
+        <h4><a href='/Home/ChangePassword?employeeId=@cookie["employeeId"]' class="btn btn-default">Change Password</a></h4>
+    }
+
+}
+

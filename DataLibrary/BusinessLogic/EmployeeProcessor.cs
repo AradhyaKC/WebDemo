@@ -195,6 +195,13 @@ namespace DataLibrary.BusinessLogic
             SqlDataAccess.Query<object, WorksOn>(sql, worksOn);
             return true;
         }
+
+        public static void ChangePassword(int employeeId , string password)
+        {
+            string sql = " update dbo.Employee set Password = @password where EmployeeId= @employeeId";
+            var sqlObject = new { employeeId = employeeId, password = password };
+            SqlDataAccess.Query<object, object>(sql, sqlObject);
+        }
         public static List<Employee> LoadEmployees()
         {
             string sql = @"select  *  from dbo.Employee;";

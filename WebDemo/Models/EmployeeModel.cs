@@ -66,7 +66,7 @@ namespace WebDemo.Models
         public int credits { get; set; }
 
         [Display(Name = "Department")]
-        [Required(ErrorMessage = "Department muust be entered")]
+        [Required(ErrorMessage = "Department must be entered")]
         public string department { get; set; }
     }
 }
