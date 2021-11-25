@@ -44,6 +44,29 @@ namespace WebDemo.Controllers
             ViewBag.Message = "Message comes here";
             return View();
         }
+        public ActionResult PersonalInfo()
+        {
+            HttpCookie cookie = Request.Cookies.Get("UserInfo");
+            if (cookie == null || cookie["employeeId"] == null) throw new Exception();
+            var employee = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(Convert.ToInt32(cookie["employeeId"]));
+            EmployeeModel employeeModel = new EmployeeModel()
+            {
+                employeeId = employee.employeeId,
+                firstName = employee.firstName,
+                lastName = employee.lastName,
+                emailAddress = employee.emailAddress,
+                confirmEmailAddress = employee.emailAddress,
+                phoneNo = employee.phoneNo,
+                dateOfBirth = employee.dateOfBirth,
+                salary = employee.salary,
+                password = employee.password,
+                confirmPassword = employee.password,
+                leavesAvailable = employee.leavesAvailable,
+                credits = employee.credits,
+                department = employee.department
+            };
+            return View(employeeModel);
+        }
 
         //public ActionResult ViewEmployees()
         //{

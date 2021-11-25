@@ -219,6 +219,7 @@
     <Content Include="Views\Home\EditProject.cshtml" />
     <Content Include="Views\Home\EditProjectEmployee.cshtml" />
     <Content Include="Views\Home\ContactInfo.cshtml" />
+    <Content Include="Views\Home\PersonalInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
