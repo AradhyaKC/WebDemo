@@ -95,10 +95,12 @@ namespace DataLibrary.BusinessLogic
 
         public static Employee GetEmployee(int employeeId)
         {
-            if (!EmployeeExists(employeeId)) throw new Exception("Employee of this id does not exist , id =" + employeeId);
             string sql = "select * from dbo.Employee where EmployeeId = @employeeId";
             var listOfEmployee = SqlDataAccess.Query<Employee, object>(sql, new { employeeId = employeeId });
-            return listOfEmployee[0];
+            if (listOfEmployee.Count == 0)
+                return null;
+            else
+                return listOfEmployee[0];
         }
         public static int CreateCompany(string companyName, string motto, DateTime startDate,string address,string emailAddress,string phoneNo)
         {
