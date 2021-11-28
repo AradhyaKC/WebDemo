@@ -10,6 +10,7 @@ namespace WebDemo.Models
     {
         [Display(Name ="Name of Company")]
         [Required(ErrorMessage ="name of company should be entered")]
+        [Validator.LettersOnly(ErrorMessage = "Company Name must be letters only ")]
         public string companyName { get; set; }
 
         [Display(Name = "Motto")]

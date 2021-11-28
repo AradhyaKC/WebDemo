@@ -567,17 +567,7 @@ namespace WebDemo.Controllers
                     ViewBag.Title = "Not enough leaves available.";
                     return View();
                 }
-                if ((leaveModel.endDate.Ticks - leaveModel.startDate.Ticks) < 0)
-                {
-                    ViewBag.Title = "End date should be later than start date.";
-                    return View();
-                }
-                if ((leaveModel.startDate - DateTime.Today).TotalSeconds / 86400.0f < 1.0f ||
-                    (leaveModel.endDate - DateTime.Today).TotalSeconds / 86400.0f < 1.0f)
-                {
-                    ViewBag.Title = "Start Date or End Date cannot be today.";
-                    return View();
-                }
+                
                 DataLibrary.BusinessLogic.EmployeeProcessor.CreateLeave(leaveModel.employeeId, leaveModel.startDate, leaveModel.endDate, leaveModel.reason);
                 return RedirectToAction("ViewAttendance", new { employeeId = leaveModel.employeeId });  
             }

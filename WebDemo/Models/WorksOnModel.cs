@@ -13,6 +13,7 @@ namespace WebDemo.Models
         public int employeeId { get; set; }
 
         [Display(Name = "Name")]
+        [Validator.LettersOnly(ErrorMessage = "First Name must be letters only ")]
         public string firstName { get; set; }
 
         [Display(Name ="Project Id")]

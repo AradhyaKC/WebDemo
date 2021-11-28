@@ -13,10 +13,12 @@ namespace WebDemo.Models
 
         [Display(Name = "First Name")]
         [Required(ErrorMessage = "First Name is Required")]
+        [Validator.LettersOnly(ErrorMessage ="First Name must be letters only ")]
         public string firstName { get; set; }
 
         [Display(Name = "Last Name")]
         [Required(ErrorMessage = "Last Name is Required")]
+        [Validator.LettersOnly(ErrorMessage = "Last Name must be letters only ")]
         public string lastName { get; set; }
 
         [DataType(DataType.EmailAddress)]
