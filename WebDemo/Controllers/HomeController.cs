@@ -390,53 +390,61 @@ namespace WebDemo.Controllers
 
         public ActionResult EditEmployee(int employeeId)
         {
-            var employee = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(employeeId);
-            var Webemployee = new WebDemo.Models.EmployeeModel
+            if (ModelState.IsValid)
             {
-                employeeId = employee.employeeId,
-                firstName = employee.firstName,
-                lastName = employee.lastName,
-                emailAddress = employee.emailAddress,
-                phoneNo = employee.phoneNo,
-                dateOfBirth = employee.dateOfBirth,
-                salary = employee.salary,
-                password = employee.password,
-                leavesAvailable = employee.leavesAvailable,
-                credits = employee.credits,
-                department = employee.department
-            };
-            return View(Webemployee);
+                var employee = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(employeeId);
+                var Webemployee = new WebDemo.Models.EmployeeModel
+                {
+                    employeeId = employee.employeeId,
+                    firstName = employee.firstName,
+                    lastName = employee.lastName,
+                    emailAddress = employee.emailAddress,
+                    phoneNo = employee.phoneNo,
+                    dateOfBirth = employee.dateOfBirth,
+                    salary = employee.salary,
+                    password = employee.password,
+                    leavesAvailable = employee.leavesAvailable,
+                    credits = employee.credits,
+                    department = employee.department
+                };
+                return View(Webemployee);
+            }
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditEmployee(EmployeeModel employeeModel)
         {
-            HttpCookie cookie = Request.Cookies.Get("UserInfo");
-            if (cookie == null) throw new Exception("cookie not found ");
-
-            DataLibrary.Models.Employee employee = new DataLibrary.Models.Employee
+            if (ModelState.IsValidField("salary") && ModelState.IsValidField("leavesAvailable") && ModelState.IsValidField("credits") &&
+                ModelState.IsValidField("department"))
             {
-                employeeId = employeeModel.employeeId,
-                firstName = employeeModel.firstName,
-                lastName = employeeModel.lastName,
-                emailAddress = employeeModel.emailAddress,
-                phoneNo = employeeModel.phoneNo,
-                dateOfBirth = employeeModel.dateOfBirth,
-                salary = employeeModel.salary,
-                password = employeeModel.password,
-                leavesAvailable = employeeModel.leavesAvailable,
-                credits = employeeModel.credits,
-                companyName = "",
-                department = employeeModel.department
-            };
-           
-             if (DataLibrary.BusinessLogic.EmployeeProcessor.EditEmployee(employee))
-                return RedirectToAction("Employees", "Home");
-             else
-                throw new Exception(" cannot Edit this employee");
+                HttpCookie cookie = Request.Cookies.Get("UserInfo");
+                if (cookie == null) throw new Exception("cookie not found ");
 
-            return RedirectToAction("Index");
+                DataLibrary.Models.Employee employee = new DataLibrary.Models.Employee
+                {
+                    employeeId = employeeModel.employeeId,
+                    firstName = employeeModel.firstName,
+                    lastName = employeeModel.lastName,
+                    emailAddress = employeeModel.emailAddress,
+                    phoneNo = employeeModel.phoneNo,
+                    dateOfBirth = employeeModel.dateOfBirth,
+                    salary = employeeModel.salary,
+                    password = employeeModel.password,
+                    leavesAvailable = employeeModel.leavesAvailable,
+                    credits = employeeModel.credits,
+                    companyName = "",
+                    department = employeeModel.department
+                };
+
+                if (DataLibrary.BusinessLogic.EmployeeProcessor.EditEmployee(employee))
+                    return RedirectToAction("Employees", "Home");
+                else
+                    throw new Exception(" cannot Edit this employee");
+                return RedirectToAction("Index");
+            }
+            return View();
         }
 
         public ActionResult ChangePassword()
@@ -463,7 +471,7 @@ namespace WebDemo.Controllers
                 DataLibrary.BusinessLogic.EmployeeProcessor.ChangePassword(employeeId, model.password);
                 return RedirectToAction("PersonalInfo");
             }
-            return RedirectToAction("Index");
+            return View();
         }
         public ActionResult EditProject(int projectId)
         {
@@ -483,15 +491,24 @@ namespace WebDemo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditProject(ProjectModel projectModel)
         {
-            if (DataLibrary.BusinessLogic.EmployeeProcessor.EditProject(projectModel.projectId, projectModel.projectName, projectModel.projectLeaderId,
-                projectModel.description, projectModel.companyName))
+            if (ModelState.IsValidField("projectLeaderId") && ModelState.IsValidField("description"))
             {
-                return RedirectToAction("ViewProjects");
+                if (DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(projectModel.projectLeaderId) == null)
+                {
+                    ViewBag.Title = "The Id for the projectLeader passes does not exist";
+                    return View(projectModel);
+                }
+                if (DataLibrary.BusinessLogic.EmployeeProcessor.EditProject(projectModel.projectId, projectModel.projectName, projectModel.projectLeaderId,
+                    projectModel.description, projectModel.companyName))
+                {
+                    return RedirectToAction("ViewProjects");
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
-            else
-            {
-                throw new Exception();
-            }
+            return View();
         }
         public ActionResult EditProjectEmployee(int employeeId,int projectId)
         {
@@ -511,15 +528,19 @@ namespace WebDemo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditProjectEmployee(WorksOnModel worksOnModel)
         {
-            if (DataLibrary.BusinessLogic.EmployeeProcessor.EditProjectEmployee(worksOnModel.projectId, worksOnModel.employeeId, worksOnModel.role,
+            if (ModelState.IsValidField("role") && ModelState.IsValidField("ShiftStartTime") && ModelState.IsValidField("shiftEndTime"))
+            {
+                if (DataLibrary.BusinessLogic.EmployeeProcessor.EditProjectEmployee(worksOnModel.projectId, worksOnModel.employeeId, worksOnModel.role,
                 worksOnModel.shiftStartTime, worksOnModel.shiftEndTime))
-            {
-                return RedirectToAction("ViewProjectTeam",new { projectId = worksOnModel.projectId });
+                {
+                    return RedirectToAction("ViewProjectTeam", new { projectId = worksOnModel.projectId });
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
-            else
-            {
-                throw new Exception();
-            }
+            return View();
         }
         public ActionResult FireEmployee(int employeeId)
         {
@@ -535,22 +556,32 @@ namespace WebDemo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateLeave(LeaveModel leaveModel)
         {
-            HttpCookie cookie = Request.Cookies.Get("UserInfo");
-            if (cookie == null || cookie["employeeId"] == null) throw new Exception();
-            leaveModel.employeeId = Convert.ToInt32(cookie["employeeId"]);
-            int noOfDays = (int)(leaveModel.endDate - leaveModel.startDate).TotalSeconds / 86400 + 1;
-            if(DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(leaveModel.employeeId).leavesAvailable < noOfDays)
+            if (ModelState.IsValid)
             {
-                ViewBag.Title = "Not enough leaves available.";
-                return View();
+                HttpCookie cookie = Request.Cookies.Get("UserInfo");
+                if (cookie == null || cookie["employeeId"] == null) throw new Exception();
+                leaveModel.employeeId = Convert.ToInt32(cookie["employeeId"]);
+                int noOfDays = (int)(leaveModel.endDate - leaveModel.startDate).TotalSeconds / 86400 + 1;
+                if (DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(leaveModel.employeeId).leavesAvailable < noOfDays)
+                {
+                    ViewBag.Title = "Not enough leaves available.";
+                    return View();
+                }
+                if ((leaveModel.endDate.Ticks - leaveModel.startDate.Ticks) < 0)
+                {
+                    ViewBag.Title = "End date should be later than start date.";
+                    return View();
+                }
+                if ((leaveModel.startDate - DateTime.Today).TotalSeconds / 86400.0f < 1.0f ||
+                    (leaveModel.endDate - DateTime.Today).TotalSeconds / 86400.0f < 1.0f)
+                {
+                    ViewBag.Title = "Start Date or End Date cannot be today.";
+                    return View();
+                }
+                DataLibrary.BusinessLogic.EmployeeProcessor.CreateLeave(leaveModel.employeeId, leaveModel.startDate, leaveModel.endDate, leaveModel.reason);
+                return RedirectToAction("ViewAttendance", new { employeeId = leaveModel.employeeId });  
             }
-            if((leaveModel.endDate.Ticks - leaveModel.startDate.Ticks) < 0)
-            {
-                ViewBag.Title = "End date should be later than start date.";
-                return View();
-            }
-            DataLibrary.BusinessLogic.EmployeeProcessor.CreateLeave(leaveModel.employeeId,leaveModel.startDate,leaveModel.endDate,leaveModel.reason);
-            return RedirectToAction("ViewAttendance", new { employeeId = leaveModel.employeeId });
+            return View();
         }
         public ActionResult ViewLeave(int employeeId)
         {
