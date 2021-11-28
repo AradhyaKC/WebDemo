@@ -14,11 +14,15 @@ namespace WebDemo.Models
         [Display(Name = "Start Date")]
         [Required(ErrorMessage ="Start Date must be entered")]
         [DataType(DataType.Date)]
+        [Validator.GreaterThanNow(Years =0,ErrorMessage = "StartDate Must be after today" )]
         public DateTime startDate { get; set; }
+
         [Display(Name = "End Date")]
         [Required(ErrorMessage = "End Date must be entered")]
         [DataType(DataType.Date)]
+        [Validator.MustBeGreaterThanDateTime(days =1,otherPropertyName ="startDate", ErrorMessage ="Must be after Start Date")]
         public DateTime endDate { get; set; }
+
         [DataType(DataType.MultilineText)]
         [Display(Name ="Reason")]
         [Required(ErrorMessage ="Reason must be entered")]

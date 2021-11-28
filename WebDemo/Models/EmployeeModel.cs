@@ -34,16 +34,19 @@ namespace WebDemo.Models
 
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Phone No")]
+        [StringLength(11, MinimumLength =9,ErrorMessage = "must be within 9-11 numbers")]
         [Required(ErrorMessage = "Phone Number is required")]
         public string phoneNo { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = " Date Of Birth")]
         [Required(ErrorMessage ="Date of birth is required")]
+        [Validator.LesserThanNow(Years =18,ErrorMessage ="Must be older than 18 years")]
         public DateTime dateOfBirth { get; set; }
 
         [Display(Name ="Salary")]
         [Required(ErrorMessage ="Salary is required")]
+        [Range(0,long.MaxValue)]
         public long salary { get; set; }
 
         [DataType(DataType.Password)]
@@ -59,9 +62,11 @@ namespace WebDemo.Models
 
         [Display(Name ="Leaves Available")]
         [Required(ErrorMessage ="number of leaves must be entered" )]
+        [Range(0, int.MaxValue)]
         public int leavesAvailable { get; set; }
 
         [Display(Name = "Credits")]
+        [Range(0, int.MaxValue)]
         [Required(ErrorMessage = "nuumber of credits must be entered")]
         public int credits { get; set; }
 

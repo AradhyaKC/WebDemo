@@ -19,6 +19,7 @@ namespace WebDemo.Models
         [DataType(DataType.Date)]
         [Display(Name = "Date when company was started")]
         [Required(ErrorMessage = "Start date should be entered")]
+        [Validator.LesserThanNow(ErrorMessage ="startDate must be before Now")]
         public DateTime startDate { get; set; }
 
         [DataType(DataType.MultilineText)]
@@ -29,6 +30,7 @@ namespace WebDemo.Models
         [Display(Name ="Phone No")]
         [DataType(DataType.PhoneNumber)]
         [Required(ErrorMessage ="Phone no must be entered")]
+        [Range(9,11,ErrorMessage ="Phone no must be within 9-11 digits")]
         public string phoneNo { get; set; }
 
         [DataType(DataType.EmailAddress)]

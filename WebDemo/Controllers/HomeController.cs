@@ -89,7 +89,10 @@ namespace WebDemo.Controllers
 
         public ActionResult Employees()
         {
-            var data = DataLibrary.BusinessLogic.EmployeeProcessor.LoadEmployees();
+            HttpCookie cookie = Request.Cookies.Get("UserInfo");
+            int managerId = Convert.ToInt32(cookie["employeeId"]);
+            string companyName = DataLibrary.BusinessLogic.EmployeeProcessor.GetEmployee(managerId).companyName;
+            var data = DataLibrary.BusinessLogic.EmployeeProcessor.LoadEmployees(companyName);
             List<WebDemo.Models.EmployeeModel> employeeModels = new List<EmployeeModel>();
             foreach(var employee in data)
             {

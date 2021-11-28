@@ -202,10 +202,11 @@ namespace DataLibrary.BusinessLogic
             var sqlObject = new { employeeId = employeeId, password = password };
             SqlDataAccess.Query<object, object>(sql, sqlObject);
         }
-        public static List<Employee> LoadEmployees()
+        public static List<Employee> LoadEmployees(string companyName)
         {
-            string sql = @"select  *  from dbo.Employee;";
-            return SqlDataAccess.LoadData<Employee>(sql);
+            var sqlObject = new { companyName = companyName };
+            string sql = @"select  *  from dbo.Employee where CompanyName =@companyName";
+            return SqlDataAccess.Query<Employee,object>(sql,sqlObject);
         }
         public static bool CanFireEmployee(int employeeId)
         {
