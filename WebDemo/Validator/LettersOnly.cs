@@ -11,11 +11,20 @@ namespace WebDemo.Validator
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             string thisValue = (string)value;
-            if (thisValue.All(char.IsLetter))
+            try
             {
-                return ValidationResult.Success;
+                if (thisValue.All(char.IsLetter))
+                {
+                    return ValidationResult.Success;
+                }
+                else return new ValidationResult(ErrorMessage);
             }
-            else return new ValidationResult(ErrorMessage);
+            catch(Exception e)
+            {
+                return new ValidationResult(ErrorMessage); 
+            }
+            
+           
         }
     }
 }

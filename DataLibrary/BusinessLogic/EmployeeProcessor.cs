@@ -361,6 +361,13 @@ namespace DataLibrary.BusinessLogic
             List<Attendance> attendances = SqlDataAccess.Query<Attendance, object>(sql, sqlObject);
             return attendances;
         }
+        public static List<Attendance> ViewAttendance(int employeeId , DateTime from , DateTime to)
+        {
+            string sql = " select Date,CheckInTime,CheckOutTime from dbo.Attendence where Date >= @fromDate and Date <= @toDate and EmployeeId = @employeeId";
+            var sqlObject = new { employeeId = employeeId,fromDate = from, toDate = to };
+            List<Attendance> attendances = SqlDataAccess.Query<Attendance, object>(sql, sqlObject);
+            return attendances;
+        }
         public static void RecordAttendance(int employeeId)
         {
             var sqlObject = new { employeeId = employeeId, date = DateTime.Today };

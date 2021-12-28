@@ -159,6 +159,7 @@
     </Compile>
     <Compile Include="Models\AttendanceModel.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
+    <Compile Include="Models\AttendanceEdit.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Models\LeaveModel.cs" />

@@ -20,7 +20,7 @@ namespace WebDemo.Models
         public int projectLeaderId { get; set; }
 
         [Display(Name ="Project Leader Name")]
-        [Validator.LettersOnly(ErrorMessage = "Project Leader Name must be letters only ")]
+        //[Validator.LettersOnly(ErrorMessage = "Project Leader Name must be letters only ")]
         public string projectLeaderName { get; set; }
 
         [Display(Name = "Description")]
@@ -28,7 +28,7 @@ namespace WebDemo.Models
         public string description { get; set; }
 
         [Display(Name = "Company Name")]
-        [Validator.LettersOnly(ErrorMessage = "Company Name must be letters only ")]
+        //[Validator.LettersOnly(ErrorMessage = "Company Name must be letters only ")]
         public string companyName { get; set; }
     }
 }

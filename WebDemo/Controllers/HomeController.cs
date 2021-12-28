@@ -19,7 +19,7 @@ namespace WebDemo.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Hello WOrld.";
+            ViewBag.Message = "Hello World.";
 
             return View();
         }
@@ -325,11 +325,15 @@ namespace WebDemo.Controllers
         //    int employeeId = Convert.ToInt32(cookie["employeeId"]);
         //    return ViewAttendance(employeeId);
         //}
+
         public ActionResult ViewAttendance(int employeeId)
         {
-            List<DataLibrary.Models.Attendance> attendances = 
-                DataLibrary.BusinessLogic.EmployeeProcessor.ViewAttendance(employeeId);
-            List<WebDemo.Models.AttendanceModel> attendanceModels = new List<AttendanceModel>();
+            //List<DataLibrary.Models.Attendance> attendances = 
+            //    DataLibrary.BusinessLogic.EmployeeProcessor.ViewAttendance(employeeId);
+
+            List<DataLibrary.Models.Attendance> attendances =
+                    DataLibrary.BusinessLogic.EmployeeProcessor.ViewAttendance(employeeId,new DateTime(1800,1,1) ,DateTime.Today);
+            List < WebDemo.Models.AttendanceModel> attendanceModels = new List<AttendanceModel>();
             ViewBag.employeeId = Convert.ToString(employeeId);
             foreach(var attendance in attendances)
             {
